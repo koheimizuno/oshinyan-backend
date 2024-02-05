@@ -50,7 +50,7 @@ ADDTIONAL_INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'account',
     'unregisterCat',
-    'ambassador'
+    'other'
 ]
 
 INSTALLED_APPS += ADDTIONAL_INSTALLED_APPS

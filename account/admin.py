@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Member, Avatar
 
+admin.site.site_header = "Oshinyan.love Administration"
+admin.site.site_title = "Oshinyan.love"
+
 # Register User Model
 class UserOption(admin.ModelAdmin):
     def get_list_display(self, request):

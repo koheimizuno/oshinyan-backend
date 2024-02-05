@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ambassador
+from .models import Ambassador, Inquiry, Banner, Advertise
 
 class AmbassadorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +15,18 @@ class AmbassadorSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'message': 'Ambassador already exists'})
         return data
+    
+class InquirySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inquiry
+        fields = "__all__"
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = "__all__"
+
+class AdvertiseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertise
+        fields = "__all__"

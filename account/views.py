@@ -1,5 +1,6 @@
 from django.conf import settings
-from .email_templates import register_email
+from utils.send_email import send_email
+from utils.email_templates import register_email
 
 # For Define API Views
 from rest_framework import generics, viewsets, status
@@ -21,43 +22,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
-# For ElasticEmail
-import ElasticEmail
-from ElasticEmail.api import emails_api
-from ElasticEmail.model.email_content import EmailContent
-from ElasticEmail.model.body_part import BodyPart
-from ElasticEmail.model.body_content_type import BodyContentType
-from ElasticEmail.model.email_recipient import EmailRecipient
-from ElasticEmail.model.email_message_data import EmailMessageData
-
-configuration = ElasticEmail.Configuration()
-configuration.api_key['apikey'] = settings.MAIL_API_KEY
-
-def send_email(reciever_email, subject, content):
-    with ElasticEmail.ApiClient(configuration) as api_client:
-            api_instance = emails_api.EmailsApi(api_client)
-            email_message_data = EmailMessageData(
-                recipients=[
-                    EmailRecipient(
-                        email=reciever_email,
-                    ),
-                ],
-                content=EmailContent(
-                    body=[
-                        BodyPart(
-                            content_type=BodyContentType("HTML"),
-                            content=content,
-                            charset="utf-8",
-                        ),
-                    ],
-                    _from=settings.BACKEND_EMAIL,
-                    reply_to=settings.BACKEND_EMAIL,
-                    subject=subject,
-                ),
-            )
-            api_instance.emails_post(email_message_data)
-
-# Viewset
 class AvatarViewSet(viewsets.ModelViewSet):
     queryset = Avatar.objects.all()
     serializer_class = AvatarSerializer
