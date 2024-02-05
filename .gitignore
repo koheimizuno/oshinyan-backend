@@ -1,0 +1,12 @@
+/env
+/media
+/build
+/staticfiles
+*.env
+/core/__pycache__
+/account/migrations
+/account/__pycache__
+/unregisterCat/migrations
+/unregisterCat/__pycache__
+/ambassador/migrations
+/ambassador/__pycache__
