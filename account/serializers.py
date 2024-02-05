@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Avatar
 from account.models import Member as User
+from registerCat.serializers import RecommendSerializer
 
 class AvatarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,11 +12,10 @@ class MemberSerializer(serializers.ModelSerializer):
     avatar_url = serializers.SerializerMethodField()
     email = serializers.EmailField(required=False)
     password = serializers.CharField(required=False, write_only=True)
-    # recommend = RecommendSerializer(read_only=True, many=True)
+    recommend = RecommendSerializer(read_only=True, many=True)
     class Meta:
         model = User
-        # fields = ('id', 'username', 'email', 'password', 'prefecture', 'avatar', 'recommend', 'avatar_url')
-        fields = ('id', 'username', 'email', 'password', 'prefecture', 'avatar', 'avatar_url')
+        fields = ('id', 'username', 'email', 'password', 'prefecture', 'avatar', 'recommend', 'avatar_url')
         extra_kwargs = {'password': {'write_only': True}}
     # validation for exisiting usernames and email addresses.
     def validate(self, data):

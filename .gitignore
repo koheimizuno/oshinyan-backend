@@ -8,5 +8,7 @@
 /account/__pycache__
 /unregisterCat/migrations
 /unregisterCat/__pycache__
+/registerCat/migrations
+/registerCat/__pycache__
 /other/migrations
 /other/__pycache__

@@ -89,7 +89,6 @@ class ShopImage(models.Model):
         return self.shop
     
 class CatApplication(models.Model):
-    is_public = models.BooleanField(default=False)
     client_type = models.CharField(max_length=6, choices=CLIENT_TYPE_CHOICES, default='個人')
     company_name = models.CharField(max_length=100, blank=True)
     kanji_name = models.CharField(max_length=100, blank=True)

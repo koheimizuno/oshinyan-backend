@@ -22,6 +22,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+    
 class AvatarViewSet(viewsets.ModelViewSet):
     queryset = Avatar.objects.all()
     serializer_class = AvatarSerializer

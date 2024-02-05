@@ -15,22 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.urls import path, include
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
-
-class CustomGroupAdmin(admin.ModelAdmin):
-    def has_module_permission(self, request):
-        return False
-admin.site.unregister(Group)
-admin.site.register(Group, CustomGroupAdmin)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('account/', include('account.urls')),
     path('unregistered/', include('unregisterCat.urls')),
+    path('cat/', include('registerCat.urls')),
     path('other/', include('other.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
