@@ -48,7 +48,8 @@ ADDTIONAL_INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'whitenoise.runserver_nostatic',
-    'account'
+    'account',
+    'unregisterCat'
 ]
 
 INSTALLED_APPS += ADDTIONAL_INSTALLED_APPS
