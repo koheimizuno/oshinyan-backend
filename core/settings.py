@@ -48,12 +48,13 @@ ADDTIONAL_INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'whitenoise.runserver_nostatic',
+    'account'
 ]
 
 INSTALLED_APPS += ADDTIONAL_INSTALLED_APPS
 
 # Custom User
-# AUTH_USER_MODEL = 'account.Member'
+AUTH_USER_MODEL = 'account.Member'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
