@@ -32,5 +32,5 @@ urlpatterns = [
     path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('account/', include('account.urls')),
     path('unregistered/', include('unregisterCat.urls')),
-    # path('ambassador/', include('ambassador.urls')),
+    path('ambassador/', include('ambassador.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
