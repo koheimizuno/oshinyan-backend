@@ -63,16 +63,6 @@ class CatImageByAdmin(models.Model):
     imgs = models.ImageField(blank=False, upload_to='uploads/cat_admin_images')
     def __int__(self):
         return f"Image of {self.cat}"
-    # def validate_image(self, value):
-    #     max_width = 960
-    #     max_height = 576
-    #     image = Image.open(value)
-    #     if image.width > max_width or image.height > max_height:
-    #         new_width = min(image.width, max_width)
-    #         new_height = min(image.height, max_height)
-    #         resized_image = image.resize((new_width, new_height))
-    #         resized_image.save(value.file.path)
-    #     return value
 
 class Recommend(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='recommend', null=True, blank=True)

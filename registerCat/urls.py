@@ -20,4 +20,5 @@ urlpatterns = [
     path('recommend', views.RecommendView.as_view(), name='recommend'),
     path('usercat', views.UserCatListView.as_view(), name='usercat'),
     path('comment', views.CommentListView.as_view(), name='comment'),
+    path('commentbyuser', views.CommentByUserListView.as_view(), name='commentbyuser'),
 ]

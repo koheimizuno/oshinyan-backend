@@ -23,18 +23,8 @@ class CatImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CatImage
         fields = "__all__"
-    
-def validate_image_dimensions(image):
-        max_width = 800  # specify your maximum width
-        max_height = 600  # specify your maximum height
-        img = Image.open(image)
-        width, height = img.size
-        if width > max_width or height > max_height:
-            raise serializers.ValidationError('Image width or height exceeds the maximum allowed dimensions.')
-        return image
 
 class CatImageByAdminSerializer(serializers.ModelSerializer):
-    imgs = serializers.ImageField(validators=[validate_image_dimensions])
     class Meta:
         model = CatImageByAdmin
         fields = "__all__"

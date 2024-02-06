@@ -148,3 +148,15 @@ class CommentListView(generics.ListAPIView):
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+        
+class CommentByUserListView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+    def get_queryset(self):
+        user_id = self.request.user.id
+        if user_id is not None:
+            try:
+                return Comment.objects.filter(user=user_id)
+            except ValueError:
+                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)

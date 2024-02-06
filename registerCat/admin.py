@@ -69,7 +69,15 @@ class CommentImageInline(admin.TabularInline):
         return False
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'comment', 'user', 'cat', 'comment_with_images']
+    list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images']
+    def formatted_comment(self, obj):
+        max_length = 50
+        comment = obj.comment
+        if len(comment) > max_length:
+            return mark_safe(f'{comment[:max_length]}...')
+        return comment
+
+    formatted_comment.short_description = 'Description'
     def comment_with_images(self, obj):
         images = obj.comment_images.all()
         if images:
