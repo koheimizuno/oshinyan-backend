@@ -15,7 +15,7 @@ class CatApplyAdmin(admin.ModelAdmin):
         if images:
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
-    catapply_with_images.short_description = 'CatApply Images'
+    catapply_with_images.short_description = 'イメージ'
     inlines = [CatApplyImageInline]
 admin.site.register(CatApply, CatApplyAdmin)
 
