@@ -44,6 +44,21 @@ class RecommendViewSet(viewsets.ModelViewSet):
     queryset = Recommend.objects.all()
     serializer_class = RecommendSerializer
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    def create(self, request, *args, **kwargs):
+        comment_data = self.get_serializer(data=request.data)
+        images = request.FILES.getlist('imgs')
+        if comment_data.is_valid():
+            item = comment_data.save()
+            for image in images:
+                CommentImage.objects.create(comment_id=item.id, imgs=image)
+            return Response(comment_data.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'errors': comment_data.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+
 
 class RandomCatView(generics.ListCreateAPIView):
     queryset = Cat.objects.filter(is_public=True).order_by('?')[:9]
@@ -121,17 +136,15 @@ class RecommendView(generics.ListCreateAPIView):
         users = Member.objects.filter(id__in=serializer)
         serializer = MemberSerializer(users, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    
+class CommentListView(generics.ListAPIView):
     serializer_class = CommentSerializer
-    def create(self, request, *args, **kwargs):
-        comment_data = self.get_serializer(data=request.data)
-        images = request.FILES.getlist('imgs')
-        if comment_data.is_valid():
-            item = comment_data.save()
-            for image in images:
-                CommentImage.objects.create(comment_id=item.id, imgs=image)
-            return Response(comment_data.data, status=status.HTTP_201_CREATED)
+    def get_queryset(self):
+        cat_id = self.request.query_params.get('cat_id')
+        if cat_id is not None:
+            try:
+                return Comment.objects.filter(cat=cat_id)
+            except ValueError:
+                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'errors': comment_data.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)

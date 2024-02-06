@@ -7,6 +7,7 @@ router.register(r'cats', views.CatViewSet)
 router.register(r'catimage', views.CatImageViewSet)
 router.register(r'character', views.CharacterViewSet)
 router.register(r'favoritething', views.FavoriteThingViewSet)
+router.register(r'recommend', views.RecommendViewSet)
 router.register(r'comment', views.CommentViewSet)
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('searchword', views.SearchFreeCatView.as_view(), name='searchword'),
     path('recommend', views.RecommendView.as_view(), name='recommend'),
     path('usercat', views.UserCatListView.as_view(), name='usercat'),
+    path('comment', views.CommentListView.as_view(), name='comment'),
 ]

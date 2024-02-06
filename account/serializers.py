@@ -38,7 +38,12 @@ class MemberSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
-        instance.avatar = validated_data.get('avatar', None)
+        avatar_data = validated_data.get('avatar')
+        if avatar_data:
+            try:
+                instance.avatar = avatar_data
+            except Avatar.DoesNotExist:
+                raise serializers.ValidationError({'message': 'Invalid avatar ID provided'})
         instance.save()
         return instance
 

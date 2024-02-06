@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage
+# from account.serializers import MemberSerializer
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,4 +53,5 @@ class CommentSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)
     class Meta:
         model = Comment
-        fields = '__all__'
+        exclude = ['cat']
+        depth = 2
