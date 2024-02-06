@@ -3,8 +3,8 @@ from django.conf import settings
 # For Define API Views
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import  Shop, ShopImage, CatApplication
-from .serializers import ShopSerializer, ShopImageSerializer, CatApplicationSerializer
+from .models import  Shop, ShopImage, CatApply, CatApplyImage
+from .serializers import ShopSerializer, ShopImageSerializer, CatApplySerializer
 
 from utils.send_email import send_email
 from utils.email_templates import cat_register_email
@@ -54,6 +54,16 @@ class ShopImageViewSet(viewsets.ModelViewSet):
     queryset = ShopImage.objects.all()
     serializer_class = ShopImageSerializer
 
-class CatApplicationViewSet(viewsets.ModelViewSet):
-    queryset = CatApplication.objects.all()
-    serializer_class = CatApplicationSerializer
+class CatApplyViewSet(viewsets.ModelViewSet):
+    queryset = CatApply.objects.all()
+    serializer_class = CatApplySerializer
+    def create(self, request, *args, **kwargs):
+        catapply_data = self.get_serializer(data=request.data)
+        images = request.FILES.getlist('imgs')
+        if catapply_data.is_valid():
+            item = catapply_data.save()
+            for image in images:
+                CatApplyImage.objects.create(cat_id=item.id, imgs=image)
+            return Response(catapply_data.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'errors': catapply_data.errors}, status=status.HTTP_400_BAD_REQUEST)

@@ -40,13 +40,11 @@ class Inquiry(models.Model):
 class Banner(models.Model):
     image = models.ImageField(blank=False, upload_to='uploads/banner_images')
     url = models.CharField(blank=True)
-
     class Meta:
         verbose_name_plural = 'TOP上位のバナー'
 
 class Advertise(models.Model):
     image = models.ImageField(blank=False, upload_to='uploads/advertise_images')
     url = models.CharField(blank=True)
-
     class Meta:
         verbose_name_plural = 'TOP中頃の広告'

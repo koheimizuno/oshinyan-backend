@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Shop, ShopImage, CatApplication
+from .models import Shop, ShopImage, CatApply
+from registerCat.serializers import CatSerializer
 
 class ShopImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,7 +9,7 @@ class ShopImageSerializer(serializers.ModelSerializer):
 
 class ShopSerializer(serializers.ModelSerializer):
     shop_images = ShopImageSerializer(read_only=True, many=True)
-    # cat = CatSerializer(read_only=True, many=True)
+    cat = CatSerializer(read_only=True, many=True)
     class Meta:
         model = Shop
         fields = '__all__'
@@ -23,7 +24,7 @@ class ShopSerializer(serializers.ModelSerializer):
                 {'message': 'Shop Name already exists'})
         return data
     
-class CatApplicationSerializer(serializers.ModelSerializer):
+class CatApplySerializer(serializers.ModelSerializer):
     class Meta:
-        model = CatApplication
+        model = CatApply
         fields = "__all__"

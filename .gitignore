@@ -4,6 +4,7 @@
 /staticfiles
 *.env
 /core/__pycache__
+/DB_backup
 /account/migrations
 /account/__pycache__
 /unregisterCat/migrations

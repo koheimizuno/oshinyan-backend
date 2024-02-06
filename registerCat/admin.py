@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Cat, CatImage, CatImageByAdmin, Character, FavoriteThing, Recommend
+from django.utils.safestring import mark_safe
+from .models import Cat, CatImage, CatImageByAdmin, Character, FavoriteThing, Recommend, Comment, CommentImage
 
 class CatImageInline(admin.TabularInline):
     model = CatImage
@@ -27,3 +28,20 @@ admin.site.register(Character, CharacterOption)
 class FavoriteThingOption(admin.ModelAdmin):
     list_display = [field.name for field in FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(FavoriteThing, FavoriteThingOption)
+
+class CommentImageInline(admin.TabularInline):
+    model = CommentImage
+    extra = 0
+    def has_change_permission(self, request, obj=None):
+        return False
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'comment', 'user', 'cat', 'comment_with_images']
+    def comment_with_images(self, obj):
+        images = obj.comment_images.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
+        return 'No Images'
+    comment_with_images.short_description = 'Comment Images'
+    inlines = [CommentImageInline]
+admin.site.register(Comment, CommentAdmin)

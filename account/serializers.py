@@ -38,6 +38,7 @@ class MemberSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
+        instance.avatar = validated_data.get('avatar', None)
         instance.save()
         return instance
 

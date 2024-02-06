@@ -7,6 +7,7 @@ router.register(r'cats', views.CatViewSet)
 router.register(r'catimage', views.CatImageViewSet)
 router.register(r'character', views.CharacterViewSet)
 router.register(r'favoritething', views.FavoriteThingViewSet)
+router.register(r'comment', views.CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

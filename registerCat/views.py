@@ -5,8 +5,8 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from account.models import Member
 from account.serializers import MemberSerializer
-from .models import Cat, CatImage, CatImageByAdmin, Character, FavoriteThing, Recommend
-from .serializers import CatSerializer, CatImageSerializer, CatImageByAdminSerializer, CharacterSerializer, FavoriteThingSerializer, RecommendSerializer
+from .models import Cat, CatImage, CatImageByAdmin, Character, FavoriteThing, Recommend, Comment, CommentImage
+from .serializers import CatSerializer, CatImageSerializer, CatImageByAdminSerializer, CharacterSerializer, FavoriteThingSerializer, RecommendSerializer, CommentSerializer
 
 class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
@@ -122,3 +122,16 @@ class RecommendView(generics.ListCreateAPIView):
         serializer = MemberSerializer(users, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    def create(self, request, *args, **kwargs):
+        comment_data = self.get_serializer(data=request.data)
+        images = request.FILES.getlist('imgs')
+        if comment_data.is_valid():
+            item = comment_data.save()
+            for image in images:
+                CommentImage.objects.create(comment_id=item.id, imgs=image)
+            return Response(comment_data.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'errors': comment_data.errors}, status=status.HTTP_400_BAD_REQUEST)

@@ -88,7 +88,7 @@ class ShopImage(models.Model):
     def __int__(self):
         return self.shop
     
-class CatApplication(models.Model):
+class CatApply(models.Model):
     client_type = models.CharField(max_length=6, choices=CLIENT_TYPE_CHOICES, default='個人')
     company_name = models.CharField(max_length=100, blank=True)
     kanji_name = models.CharField(max_length=100, blank=True)
@@ -96,6 +96,10 @@ class CatApplication(models.Model):
     email = models.EmailField(blank=True)
     shop_type = models.CharField(max_length=100, choices=SHOP_TYPE_CHOICES, default='カフェ')
     cat_info = models.TextField(blank=True)
-
     class Meta:
         verbose_name_plural = "推しニャン申請"
+
+class CatApplyImage(models.Model):
+    cat = models.ForeignKey(
+        CatApply, on_delete=models.CASCADE, related_name='catapply_images')
+    imgs = models.ImageField(blank=False, upload_to='uploads/catapply_images')

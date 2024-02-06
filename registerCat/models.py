@@ -40,7 +40,6 @@ class Cat(models.Model):
     character = models.ManyToManyField(Character)
     favorite_things = models.ManyToManyField(FavoriteThing)
     attendance = models.CharField(max_length=6, choices=ATTENDANCE_CHOICES, default='毎日')
-    comment = models.TextField(blank=True)
     description = models.TextField(blank=True)
     last_update = models.DateTimeField(auto_now=True)
     class Meta:
@@ -55,14 +54,14 @@ class CatImage(models.Model):
         Cat, on_delete=models.CASCADE, related_name='cat_images')
     imgs = models.ImageField(blank=False, upload_to='uploads/cat_images')
     def __int__(self):
-        return f"Image of {self.cat.name}"
+        return f"Image of {self.cat}"
     
 class CatImageByAdmin(models.Model):
     cat = models.ForeignKey(
         Cat, on_delete=models.CASCADE, related_name='cat_admin_images')
     imgs = models.ImageField(blank=False, upload_to='uploads/cat_admin_images')
     def __int__(self):
-        return f"Image of {self.cat.name}"
+        return f"Image of {self.cat}"
 
 class Recommend(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='recommend', null=True, blank=True)
@@ -70,4 +69,18 @@ class Recommend(models.Model):
     class Meta:
         verbose_name_plural='推し'
     def __int__(self):
-        return self.user_id
+        return self.user
+    
+class Comment(models.Model):
+    cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='comment', null=True, blank=True)
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='comment', null=True, blank=True)
+    comment = models.TextField(blank=True)
+    class Meta:
+        verbose_name_plural='コメント'
+
+class CommentImage(models.Model):
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name='comment_images')
+    imgs = models.ImageField(blank=False, upload_to='uploads/comment_images')
+    class Meta:
+        verbose_name_plural='コメント画像'

@@ -42,10 +42,8 @@ class Member(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-
     class Meta:
         verbose_name_plural = "会員"
-
     @property
     def avatar_url(self):
         if self.avatar:

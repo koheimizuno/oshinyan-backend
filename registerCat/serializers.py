@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat
+from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,3 +42,14 @@ class CatSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'message': 'Email Address already exists'})
         return data
+
+class CommentImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentImage
+        fields = "__all__"
+
+class CommentSerializer(serializers.ModelSerializer):
+    comment_images = CommentImageSerializer(read_only=True, many=True)
+    class Meta:
+        model = Comment
+        fields = '__all__'
