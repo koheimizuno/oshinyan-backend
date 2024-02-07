@@ -91,7 +91,7 @@ class ResetPasswordView(generics.CreateAPIView):
         send_email(user.email, "パスワードリセット", 
                    f"""
                         <p>Please click the link below and reset your password. </p>
-                        <p>{settings.FRONT_URL}/password_reset/{uid}/{token}/</p>
+                        <p><a href='{settings.FRONT_URL}/password_reset/{uid}/{token}'>https://oshinyan.love/password_reset/{uid}/{token}</a></p>
                     """
         )
         return Response(status=status.HTTP_200_OK)
