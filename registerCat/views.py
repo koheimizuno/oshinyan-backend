@@ -93,7 +93,19 @@ class SearchPrefectureCatView(generics.ListAPIView):
         keyword = self.request.query_params.get('keyword')
         if keyword:
             try:
-                return Cat.objects.filter(prefecture=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
+                return Cat.objects.filter(shop__prefecture=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
+            except ValueError:
+                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+
+class SearchCharacterCatView(generics.ListAPIView):
+    serializer_class = serializers.CatSerializer
+    def get_queryset(self):
+        keyword = self.request.query_params.get('keyword')
+        if keyword:
+            try:
+                return Cat.objects.filter(character__character=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:

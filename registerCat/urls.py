@@ -17,6 +17,7 @@ urlpatterns = [
     path('totalrankingcat', views.TotalRankingCatView.as_view(), name='totalrankingcat'),
     path('monthrankingcat', views.MonthRankingCatView.as_view(), name='monthrankingcat'),
     path('searchprefecture', views.SearchPrefectureCatView.as_view(), name='searchprefecture'),
+    path('searchcharacter', views.SearchCharacterCatView.as_view(), name='searchcharacter'),
     path('searchword', views.SearchFreeCatView.as_view(), name='searchword'),
     path('recommend', views.RecommendView.as_view(), name='recommend'),
     path('usercat', views.UserCatListView.as_view(), name='usercat'),
