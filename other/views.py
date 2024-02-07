@@ -2,8 +2,8 @@ from django.conf import settings
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Ambassador, Inquiry, Banner, Advertise
-from .serializers import AmbassadorSerializer, InquirySerializer, BannerSerializer, AdvertiseSerializer
+from .models import Ambassador, Inquiry, Banner
+from .serializers import AmbassadorSerializer, InquirySerializer, BannerSerializer
 
 from utils.send_email import send_email
 from utils.email_templates import ambassador_email
@@ -88,6 +88,6 @@ class BannerViewSet(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
 
-class AdvertiseViewSet(viewsets.ModelViewSet):
-    queryset = Advertise.objects.all()
-    serializer_class = AdvertiseSerializer
+# class AdvertiseViewSet(viewsets.ModelViewSet):
+#     queryset = Advertise.objects.all()
+#     serializer_class = AdvertiseSerializer

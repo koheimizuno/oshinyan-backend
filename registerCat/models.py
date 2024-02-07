@@ -1,7 +1,6 @@
 from django.db import models
 from account.models import Member
 from unregisterCat.models import Shop
-from PIL import Image
 
 CLIENT_TYPE_CHOICES = (
     ('個人','個人'),

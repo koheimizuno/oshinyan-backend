@@ -17,16 +17,21 @@ class MemberSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'password', 'prefecture', 'avatar', 'recommend', 'avatar_url')
         extra_kwargs = {'password': {'write_only': True}}
+
+    def validate_password(self, value):
+        # Validate that the password contains at least 6 alphanumeric characters
+        if len(value) < 6 or not any(char.isnumeric() for char in value) or not any(char.isalpha() for char in value):
+            raise serializers.ValidationError('Password must contain at least 6 alphanumeric characters.')
+        return value
+    
     # validation for exisiting usernames and email addresses.
     def validate(self, data):
         username = data.get('username')
         email = data.get('email')
         if User.objects.filter(username=username).exists():
-            raise serializers.ValidationError(
-                {'message': 'Username already exists'})
+            raise serializers.ValidationError('Username already exists')
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError(
-                {'message': 'Email Address already exists'})
+            raise serializers.ValidationError('Email Address already exists')
         return data
     def get_avatar_url(self, user):
         if user.avatar:

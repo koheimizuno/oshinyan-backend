@@ -1,8 +1,5 @@
 from rest_framework import serializers
 from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage
-from PIL import Image
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,5 +52,12 @@ class CommentSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)
     class Meta:
         model = Comment
-        exclude = ['cat']
+        fields='__all__'
+
+class CommentListSerializer(serializers.ModelSerializer):
+    comment_images = CommentImageSerializer(read_only=True, many=True)
+    class Meta:
+        model = Comment
+        fields='__all__'
+        # exclude = ['cat']
         depth = 2

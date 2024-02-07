@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from account.models import Member
 from account.serializers import MemberSerializer
 from .models import Cat, CatImage, CatImageByAdmin, Character, FavoriteThing, Recommend, Comment, CommentImage
-from .serializers import CatSerializer, CatImageSerializer, CatImageByAdminSerializer, CharacterSerializer, FavoriteThingSerializer, RecommendSerializer, CommentSerializer
+from .serializers import CatSerializer, CatImageSerializer, CatImageByAdminSerializer, CharacterSerializer, FavoriteThingSerializer, RecommendSerializer, CommentSerializer, CommentListSerializer
 
 class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
@@ -138,7 +138,7 @@ class RecommendView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CommentListView(generics.ListAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = CommentListSerializer
     def get_queryset(self):
         cat_id = self.request.query_params.get('cat_id')
         if cat_id is not None:
@@ -150,12 +150,25 @@ class CommentListView(generics.ListAPIView):
             return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
         
 class CommentByUserListView(generics.ListAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = CommentListSerializer
     def get_queryset(self):
         user_id = self.request.user.id
         if user_id is not None:
             try:
                 return Comment.objects.filter(user=user_id)
+            except ValueError:
+                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+
+class CommentByUserCatListView(generics.ListAPIView):
+    serializer_class = CommentListSerializer
+    def get_queryset(self):
+        user_id = self.request.user.id
+        cat_id = self.request.query_params.get('cat_id')
+        if user_id is not None and cat_id is not None:
+            try:
+                return Comment.objects.filter(user=user_id, cat=cat_id)
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:

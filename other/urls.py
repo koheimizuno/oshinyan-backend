@@ -6,7 +6,7 @@ router = DefaultRouter()
 router.register(r'ambassador', views.AmbassadorViewSet)
 router.register(r'inquiry', views.InquiryViewSet)
 router.register(r'banner', views.BannerViewSet)
-router.register(r'advertise', views.AdvertiseViewSet)
+# router.register(r'advertise', views.AdvertiseViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

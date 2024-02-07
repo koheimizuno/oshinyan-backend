@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ambassador, Inquiry, Banner, Advertise
+from .models import Ambassador, Inquiry, Banner
 
 class AmbassadorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,7 +26,7 @@ class BannerSerializer(serializers.ModelSerializer):
         model = Banner
         fields = "__all__"
 
-class AdvertiseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Advertise
-        fields = "__all__"
+# class AdvertiseSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Advertise
+#         fields = "__all__"

@@ -16,6 +16,7 @@ class CatImageInline(admin.TabularInline):
 
 class CatAdmin(admin.ModelAdmin):
     list_display = ['id', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin']
+    filter_horizontal = ('character', 'favorite_things',)
     def display_character(self, obj):
         return ', '.join([character.character for character in obj.character.all()])
     display_character.short_description = 'Character'
