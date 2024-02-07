@@ -25,8 +25,3 @@ class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
         fields = "__all__"
-
-# class AdvertiseSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Advertise
-#         fields = "__all__"

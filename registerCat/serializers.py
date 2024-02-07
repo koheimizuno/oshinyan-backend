@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage
+from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage, Advertise, AdvertiseImage
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,3 +61,24 @@ class CommentListSerializer(serializers.ModelSerializer):
         fields='__all__'
         # exclude = ['cat']
         depth = 2
+
+class AdvertiseImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdvertiseImage
+        fields = "__all__"
+
+class AdvertiseSerializer(serializers.ModelSerializer):
+    advertise_images = CatImageSerializer(read_only=True, many=True)
+    recommend = RecommendSerializer(read_only=True, many=True, required=False)
+    character = CharacterSerializer(many=True, read_only=True)
+    favorite_things = FavoriteThingSerializer(many=True, read_only=True)
+    class Meta:
+        model = Advertise
+        fields = "__all__"
+        depth = 1
+    def validate(self, data):
+        email = data.get('email')
+        if Advertise.objects.filter(email=email).exists():
+            raise serializers.ValidationError(
+                {'message': 'Email Address already exists'})
+        return data

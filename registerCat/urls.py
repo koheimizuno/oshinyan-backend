@@ -9,6 +9,7 @@ router.register(r'character', views.CharacterViewSet)
 router.register(r'favoritething', views.FavoriteThingViewSet)
 router.register(r'recommend', views.RecommendViewSet)
 router.register(r'comment', views.CommentViewSet)
+router.register(r'advertise', views.AdvertiseViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

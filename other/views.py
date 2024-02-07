@@ -87,7 +87,3 @@ class InquiryViewSet(viewsets.ModelViewSet):
 class BannerViewSet(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
-
-# class AdvertiseViewSet(viewsets.ModelViewSet):
-#     queryset = Advertise.objects.all()
-#     serializer_class = AdvertiseSerializer

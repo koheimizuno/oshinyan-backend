@@ -25,6 +25,7 @@ from django.contrib.auth.tokens import default_token_generator
 class UserViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
+    permission_classes = [IsAuthenticated]
     
 class AvatarViewSet(viewsets.ModelViewSet):
     queryset = Avatar.objects.all()
