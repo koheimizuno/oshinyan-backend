@@ -1,27 +1,27 @@
 from rest_framework import serializers
-from .models import Shop, ShopImage, CatApply
+from .models import UnregisterShop, UnregisterShopImage, CatApply
 from registerCat.serializers import CatSerializer
 
-class ShopImageSerializer(serializers.ModelSerializer):
+class UnregisterShopImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ShopImage
+        model = UnregisterShopImage
         fields = "__all__"
 
-class ShopSerializer(serializers.ModelSerializer):
-    shop_images = ShopImageSerializer(read_only=True, many=True)
+class UnregisterShopSerializer(serializers.ModelSerializer):
+    shop_images = UnregisterShopImageSerializer(read_only=True, many=True)
     cat = CatSerializer(read_only=True, many=True)
     class Meta:
-        model = Shop
+        model = UnregisterShop
         fields = '__all__'
     def validate(self, data):
         email = data.get('email')
         shop_name = data.get('shop_name')
-        if Shop.objects.filter(email=email).exists():
+        if UnregisterShop.objects.filter(email=email).exists():
             raise serializers.ValidationError(
                 {'message': 'Email Address already exists'})
-        if Shop.objects.filter(shop_name=shop_name).exists():
+        if UnregisterShop.objects.filter(shop_name=shop_name).exists():
             raise serializers.ValidationError(
-                {'message': 'Shop Name already exists'})
+                {'message': 'UnregisterShop Name already exists'})
         return data
     
 class CatApplySerializer(serializers.ModelSerializer):

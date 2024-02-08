@@ -190,6 +190,6 @@ FRONT_URL = 'http://162.43.50.92'
 ADMIN_REORDER = (
     {'app': 'account', 'models': ('account.Member', 'account.Avatar')},
     {'app': 'registerCat', 'models': ('registerCat.Cat', 'registerCat.Advertise', 'registerCat.Column', 'registerCat.ColumnBlog', 'registerCat.Character', 'registerCat.FavoriteThing', 'registerCat.Recommend', 'registerCat.Comment')},
-    {'app': 'unregisterCat', 'models' : ('unregisterCat.Shop', 'unregisterCat.CatApply')},
+    {'app': 'unregisterCat', 'models' : ('unregisterCat.UnregisterShop', 'unregisterCat.CatApply')},
     {'app': 'other', 'models' : ('other.Ambassador', 'other.Inquiry', 'other.Banner')},
 )

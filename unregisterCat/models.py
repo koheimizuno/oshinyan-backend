@@ -59,7 +59,7 @@ SHOP_TYPE_CHOICES = (
     ('カフェ', 'カフェ'),
 )
 
-class Shop(models.Model):
+class UnregisterShop(models.Model):
     shop_name = models.CharField(max_length=100, verbose_name='店舗名')
     prefecture = models.CharField(max_length=100, choices=PREFECTURE_CHOICES, default='北海道', verbose_name='都道府県')
     city = models.CharField(max_length=100, blank=True, verbose_name='市区町村')
@@ -77,9 +77,9 @@ class Shop(models.Model):
     def __str__(self):
         return self.shop_name
 
-class ShopImage(models.Model):
+class UnregisterShopImage(models.Model):
     shop = models.ForeignKey(
-        Shop, on_delete=models.CASCADE, related_name='shop_images')
+        UnregisterShop, on_delete=models.CASCADE, related_name='shop_images')
     imgs = models.ImageField(blank=False, upload_to='unregistershop')
 
     class Meta:

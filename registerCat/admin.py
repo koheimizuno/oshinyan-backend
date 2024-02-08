@@ -197,3 +197,20 @@ admin.site.register(models.Column, ColumnAdmin)
 class ColumnBlogOption(admin.ModelAdmin):
     list_display = [field.name for field in models.ColumnBlog._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.ColumnBlog, ColumnBlogOption)
+
+class ShopImageInline(admin.TabularInline):
+    model = models.ShopImage
+    extra = 0
+    def has_change_permission(self, request, obj=None):
+        return False
+
+class ShopAdmin(admin.ModelAdmin):
+    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images', 'last_update']
+    def shop_with_images(self, obj):
+        images = obj.shop_images.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
+        return 'No Images'
+    shop_with_images.short_description = 'Shop Images'
+    inlines = [ShopImageInline]
+admin.site.register(models.Shop, ShopAdmin)

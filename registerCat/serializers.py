@@ -38,7 +38,7 @@ class CatSerializer(serializers.ModelSerializer):
         depth = 1
     def validate(self, data):
         email = data.get('email')
-        if Cat.objects.filter(email=email).exists():
+        if models.Cat.objects.filter(email=email).exists():
             raise serializers.ValidationError(
                 {'message': 'Email Address already exists'})
         return data
@@ -104,3 +104,25 @@ class ColumnSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Column
         fields = "__all__"
+
+class ShopImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShopImage
+        fields = "__all__"
+
+class ShopSerializer(serializers.ModelSerializer):
+    shop_images = ShopImageSerializer(read_only=True, many=True)
+    cat = CatSerializer(read_only=True, many=True)
+    class Meta:
+        model = models.Shop
+        fields = '__all__'
+    def validate(self, data):
+        email = data.get('email')
+        shop_name = data.get('shop_name')
+        if models.Shop.objects.filter(email=email).exists():
+            raise serializers.ValidationError(
+                {'message': 'Email Address already exists'})
+        if models.Shop.objects.filter(shop_name=shop_name).exists():
+            raise serializers.ValidationError(
+                {'message': 'Shop Name already exists'})
+        return data

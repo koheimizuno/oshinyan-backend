@@ -3,25 +3,25 @@ from django.conf import settings
 # For Define API Views
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import  Shop, ShopImage, CatApply, CatApplyImage
-from .serializers import ShopSerializer, ShopImageSerializer, CatApplySerializer
+from .models import  UnregisterShop, UnregisterShopImage, CatApply, CatApplyImage
+from .serializers import UnregisterShopSerializer, UnregisterShopImageSerializer, CatApplySerializer
 
 from utils.send_email import send_email
 from utils.email_templates import cat_register_email
 
-class ShopViewSet(viewsets.ModelViewSet):
-    queryset = Shop.objects.all()
-    serializer_class = ShopSerializer
+class UnregisterShopViewSet(viewsets.ModelViewSet):
+    queryset = UnregisterShop.objects.all()
+    serializer_class = UnregisterShopSerializer
     def create(self, request, *args, **kwargs):
         shop_data = self.get_serializer(data=request.data)
         images = request.FILES.getlist('imgs')
         shop_name = request.data.get('shop_name')
         
         if shop_data.is_valid():
-            if not Shop.objects.filter(shop_name=shop_name).exists():
+            if not UnregisterShop.objects.filter(shop_name=shop_name).exists():
                 item = shop_data.save()
                 for image in images:
-                    ShopImage.objects.create(shop_id=item.id, imgs=image)
+                    UnregisterShopImage.objects.create(shop_id=item.id, imgs=image)
                 
                 send_email(shop_data.data['email'], "看板猫！発見御礼にゃ！", "<p>" + shop_data.data['shop_name'] + "様</p>" + cat_register_email)
                 send_email(settings.BACKEND_EMAIL, '看板猫　登録依頼にゃ！',
@@ -50,9 +50,9 @@ class ShopViewSet(viewsets.ModelViewSet):
         else:
             return Response({'errors': shop_data.errors}, status=status.HTTP_400_BAD_REQUEST)
         
-class ShopImageViewSet(viewsets.ModelViewSet):
-    queryset = ShopImage.objects.all()
-    serializer_class = ShopImageSerializer
+class UnregisterShopImageViewSet(viewsets.ModelViewSet):
+    queryset = UnregisterShopImage.objects.all()
+    serializer_class = UnregisterShopImageSerializer
 
 class CatApplyViewSet(viewsets.ModelViewSet):
     queryset = CatApply.objects.all()
