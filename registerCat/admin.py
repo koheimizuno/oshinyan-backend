@@ -35,14 +35,14 @@ class CatAdmin(admin.ModelAdmin):
     formatted_description.short_description = 'Description'
     
     def cat_with_images(self, obj):
-        images = obj.cat_images.all()
+        images = obj.images.all()
         if images:
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px; margin : 1px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
     cat_with_images.short_description = '画像'
 
     def cat_with_images_admin(self, obj):
-        images = obj.cat_admin_images.all()
+        images = obj.admin_images.all()
         if images:
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px; margin : 1px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
@@ -94,8 +94,14 @@ class AdvertiseImageInline(admin.TabularInline):
     # def has_change_permission(self, request, obj=None):
     #     return False
 
+class AdvertiseImageByAdminInline(admin.TabularInline):
+    model = models.AdvertiseImageByAdmin
+    extra = 1
+    # def has_change_permission(self, request, obj=None):
+    #     return False
+
 class AdvertiseAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'advertise_with_images']
+    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'advertise_with_images', 'advertise_with_images_admin']
     filter_horizontal = ('character', 'favorite_things',)
     def display_character(self, obj):
         return ', '.join([character.character for character in obj.character.all()])
@@ -115,13 +121,20 @@ class AdvertiseAdmin(admin.ModelAdmin):
     formatted_description.short_description = 'Description'
     
     def advertise_with_images(self, obj):
-        images = obj.advertise_images.all()
+        images = obj.images.all()
         if images:
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px; margin : 1px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
     advertise_with_images.short_description = '画像'
+
+    def advertise_with_images_admin(self, obj):
+        images = obj.admin_images.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px; margin : 1px;">'.format(img.imgs.url) for img in images))
+        return 'No Images'
+    advertise_with_images_admin.short_description = '画像'
     
-    inlines = [AdvertiseImageInline]
+    inlines = [AdvertiseImageInline, AdvertiseImageByAdminInline]
 admin.site.register(models.Advertise, AdvertiseAdmin)
 
 class BannerAdmin(admin.ModelAdmin):
@@ -144,7 +157,7 @@ class ColumnBlogInline(admin.TabularInline):
     #     return False
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
+    list_display = ['id', 'is_public', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
     def formatted_description(self, obj):
         max_length = 50
         description = obj.description

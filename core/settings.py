@@ -189,7 +189,7 @@ FRONT_URL = 'http://162.43.50.92'
 # For reorder apps and models in admin page
 ADMIN_REORDER = (
     {'app': 'account', 'models': ('account.Member', 'account.Avatar')},
-    {'app': 'registerCat', 'models': ('registerCat.Cat', 'registerCat.Advertise', 'registerCat.Character', 'registerCat.FavoriteThing', 'registerCat.Recommend', 'registerCat.Comment')},
+    {'app': 'registerCat', 'models': ('registerCat.Cat', 'registerCat.Advertise', 'registerCat.Column', 'registerCat.ColumnBlog', 'registerCat.Character', 'registerCat.FavoriteThing', 'registerCat.Recommend', 'registerCat.Comment')},
     {'app': 'unregisterCat', 'models' : ('unregisterCat.Shop', 'unregisterCat.CatApply')},
     {'app': 'other', 'models' : ('other.Ambassador', 'other.Inquiry', 'other.Banner')},
 )

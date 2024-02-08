@@ -16,6 +16,7 @@ router.register(r'column', views.ColumnViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('randomcat', views.RandomCatView.as_view(), name='randomcat'),
+    path('randomadvertise', views.AdvertiseView.as_view(), name='randomadvertise'),
     path('totalrankingcat', views.TotalRankingCatView.as_view(), name='totalrankingcat'),
     path('monthrankingcat', views.MonthRankingCatView.as_view(), name='monthrankingcat'),
     path('searchprefecture', views.SearchPrefectureCatView.as_view(), name='searchprefecture'),

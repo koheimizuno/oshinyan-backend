@@ -27,8 +27,8 @@ class CatImageByAdminSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class CatSerializer(serializers.ModelSerializer):
-    cat_images = CatImageSerializer(read_only=True, many=True)
-    cat_admin_images = CatImageByAdminSerializer(read_only=True, many=True)
+    images = CatImageSerializer(read_only=True, many=True)
+    admin_images = CatImageByAdminSerializer(read_only=True, many=True)
     recommend = RecommendSerializer(read_only=True, many=True)
     character = CharacterSerializer(many=True, read_only=True)
     favorite_things = FavoriteThingSerializer(many=True, read_only=True)
@@ -67,8 +67,14 @@ class AdvertiseImageSerializer(serializers.ModelSerializer):
         model = models.AdvertiseImage
         fields = "__all__"
 
+class AdvertiseImageByAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.AdvertiseImageByAdmin
+        fields = "__all__"
+
 class AdvertiseSerializer(serializers.ModelSerializer):
-    advertise_images = CatImageSerializer(read_only=True, many=True)
+    images = CatImageSerializer(read_only=True, many=True)
+    admin_images = AdvertiseImageByAdminSerializer(read_only=True, many=True)
     recommend = RecommendSerializer(read_only=True, many=True, required=False)
     character = CharacterSerializer(many=True, read_only=True)
     favorite_things = FavoriteThingSerializer(many=True, read_only=True)

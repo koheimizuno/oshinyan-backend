@@ -60,11 +60,15 @@ class CommentViewSet(viewsets.ModelViewSet):
             return Response({'errors': comment_data.errors}, status=status.HTTP_400_BAD_REQUEST)
         
 class AdvertiseViewSet(viewsets.ModelViewSet):
+    queryset = models.Advertise.objects.all()
+    serializer_class = serializers.AdvertiseSerializer
+
+class AdvertiseView(generics.ListAPIView):
     queryset = models.Advertise.objects.filter(is_public=True).order_by('?')[:9]
     serializer_class = serializers.AdvertiseSerializer
 
 class ColumnViewSet(viewsets.ModelViewSet):
-    queryset = models.Column.objects.all()
+    queryset = models.Column.objects.filter(is_public=True)
     serializer_class = serializers.ColumnSerializer
 
 class RandomCatView(generics.ListCreateAPIView):

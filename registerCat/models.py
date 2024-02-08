@@ -51,7 +51,7 @@ class Cat(models.Model):
     
 class CatImage(models.Model):
     cat = models.ForeignKey(
-        Cat, on_delete=models.CASCADE, related_name='cat_images')
+        Cat, on_delete=models.CASCADE, related_name='images')
     imgs = models.ImageField(upload_to='cat/images')
     def __int__(self):
         return f"Image of {self.cat}"
@@ -60,7 +60,7 @@ class CatImage(models.Model):
     
 class CatImageByAdmin(models.Model):
     cat = models.ForeignKey(
-        Cat, on_delete=models.CASCADE, related_name='cat_admin_images')
+        Cat, on_delete=models.CASCADE, related_name='admin_images')
     imgs = models.ImageField(upload_to='cat/admin_images')
     def __int__(self):
         return f"Image of {self.cat}"
@@ -86,10 +86,19 @@ class Advertise(models.Model):
     
 class AdvertiseImage(models.Model):
     cat = models.ForeignKey(
-        Advertise, on_delete=models.CASCADE, related_name='advertise_images')
-    imgs = models.ImageField(upload_to='advertise')
+        Advertise, on_delete=models.CASCADE, related_name='images')
+    imgs = models.ImageField(upload_to='advertise/images')
     class Meta:
         verbose_name_plural = '画像'
+    
+class AdvertiseImageByAdmin(models.Model):
+    cat = models.ForeignKey(
+        Advertise, on_delete=models.CASCADE, related_name='admin_images')
+    imgs = models.ImageField(upload_to='advertise/admin_images')
+    def __int__(self):
+        return f"Image of {self.cat}"
+    class Meta:
+        verbose_name_plural='画像'
 
 class Recommend(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='recommend', null=True, blank=True, verbose_name='看板猫')
@@ -124,6 +133,7 @@ from django.utils import timezone
 
 
 class Column(models.Model):
+    is_public = models.BooleanField(default=False, verbose_name='公開')
     title = models.CharField()
     hero_image = models.ImageField(upload_to='column/hero_images')
     cat_name = models.CharField(max_length=100)
