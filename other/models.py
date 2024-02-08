@@ -36,16 +36,3 @@ class Inquiry(models.Model):
 
     class Meta:
         verbose_name_plural = 'お問い合わせ'
-
-class Banner(models.Model):
-    image = models.ImageField(blank=False, upload_to='uploads/banner_images')
-    url = models.CharField(blank=True)
-    class Meta:
-        verbose_name_plural = 'TOP上位のバナー'
-
-ATTENDANCE_CHOICES = (
-    ('毎日','毎日'),
-    ('二日', '二日'),
-    ('三日', '三日'),
-    ('四日', '四日'),
-)

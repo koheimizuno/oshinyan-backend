@@ -10,6 +10,8 @@ router.register(r'favoritething', views.FavoriteThingViewSet)
 router.register(r'recommend', views.RecommendViewSet)
 router.register(r'comment', views.CommentViewSet)
 router.register(r'advertise', views.AdvertiseViewSet)
+router.register(r'banner', views.BannerViewSet)
+router.register(r'column', views.ColumnViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

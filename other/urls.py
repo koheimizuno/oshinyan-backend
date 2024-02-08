@@ -5,7 +5,6 @@ from . import views
 router = DefaultRouter()
 router.register(r'ambassador', views.AmbassadorViewSet)
 router.register(r'inquiry', views.InquiryViewSet)
-router.register(r'banner', views.BannerViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

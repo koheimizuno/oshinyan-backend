@@ -1,29 +1,29 @@
 from rest_framework import serializers
-from .models import Recommend, Character, FavoriteThing, CatImage, CatImageByAdmin, Cat, Comment, CommentImage, Advertise, AdvertiseImage
+from . import models
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Recommend
+        model = models.Recommend
         fields = "__all__"
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Character
+        model = models.Character
         fields = "__all__"
    
 class FavoriteThingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FavoriteThing
+        model = models.FavoriteThing
         fields = "__all__"
 
 class CatImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CatImage
+        model = models.CatImage
         fields = "__all__"
 
 class CatImageByAdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CatImageByAdmin
+        model = models.CatImageByAdmin
         fields = "__all__"
 
 class CatSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class CatSerializer(serializers.ModelSerializer):
     character = CharacterSerializer(many=True, read_only=True)
     favorite_things = FavoriteThingSerializer(many=True, read_only=True)
     class Meta:
-        model = Cat
+        model = models.Cat
         fields = "__all__"
         depth = 1
     def validate(self, data):
@@ -45,26 +45,26 @@ class CatSerializer(serializers.ModelSerializer):
 
 class CommentImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CommentImage
+        model = models.CommentImage
         fields = "__all__"
 
 class CommentSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)
     class Meta:
-        model = Comment
+        model = models.Comment
         fields='__all__'
 
 class CommentListSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)
     class Meta:
-        model = Comment
+        model = models.Comment
         fields='__all__'
         # exclude = ['cat']
         depth = 2
 
 class AdvertiseImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AdvertiseImage
+        model = models.AdvertiseImage
         fields = "__all__"
 
 class AdvertiseSerializer(serializers.ModelSerializer):
@@ -73,12 +73,28 @@ class AdvertiseSerializer(serializers.ModelSerializer):
     character = CharacterSerializer(many=True, read_only=True)
     favorite_things = FavoriteThingSerializer(many=True, read_only=True)
     class Meta:
-        model = Advertise
+        model = models.Advertise
         fields = "__all__"
         depth = 1
     def validate(self, data):
         email = data.get('email')
-        if Advertise.objects.filter(email=email).exists():
+        if models.Advertise.objects.filter(email=email).exists():
             raise serializers.ValidationError(
                 {'message': 'Email Address already exists'})
         return data
+    
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Banner
+        fields = "__all__"
+
+class ColumnBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ColumnBlog
+        fields = "__all__"
+
+class ColumnSerializer(serializers.ModelSerializer):
+    blog = ColumnBlogSerializer(read_only=True, many=True)
+    class Meta:
+        model = models.Column
+        fields = "__all__"

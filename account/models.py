@@ -31,11 +31,11 @@ class Avatar(models.Model):
         verbose_name_plural = "プロフィール画像"
 
 class Member(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
-    email = models.EmailField(unique=True)
-    prefecture = models.CharField(max_length=100,blank=True, null=True)
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True, verbose_name='ニックネーム')
+    email = models.EmailField(unique=True, verbose_name='メールアドレス')
+    prefecture = models.CharField(max_length=100,blank=True, null=True, verbose_name='居住エリア')
     avatar = models.ForeignKey(
-        Avatar, on_delete=models.CASCADE, related_name='avatar_url', blank=True, null=True)
+        Avatar, on_delete=models.CASCADE, related_name='avatar_url', blank=True, null=True, verbose_name='プロフィール画像')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True)

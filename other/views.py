@@ -2,8 +2,8 @@ from django.conf import settings
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Ambassador, Inquiry, Banner
-from .serializers import AmbassadorSerializer, InquirySerializer, BannerSerializer
+from .models import Ambassador, Inquiry
+from .serializers import AmbassadorSerializer, InquirySerializer
 
 from utils.send_email import send_email
 from utils.email_templates import ambassador_email
@@ -83,7 +83,3 @@ class InquiryViewSet(viewsets.ModelViewSet):
                     """
         )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-class BannerViewSet(viewsets.ModelViewSet):
-    queryset = Banner.objects.all()
-    serializer_class = BannerSerializer

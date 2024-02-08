@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ambassador, Inquiry, Banner
+from .models import Ambassador, Inquiry
 
 class AmbassadorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,9 +19,4 @@ class AmbassadorSerializer(serializers.ModelSerializer):
 class InquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inquiry
-        fields = "__all__"
-
-class BannerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Banner
         fields = "__all__"
