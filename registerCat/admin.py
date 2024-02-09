@@ -215,3 +215,81 @@ class ShopAdmin(admin.ModelAdmin):
     shop_with_images.short_description = 'Shop Images'
     inlines = [ShopImageInline]
 admin.site.register(models.Shop, ShopAdmin)
+
+class ReactionCatImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionCatImage, ReactionCatImageAdmin)
+
+class ReactionFoodImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionFoodImage, ReactionFoodImageAdmin)
+
+class ReactionSeasonImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionSeasonImage, ReactionSeasonImageAdmin)
+
+class ReactionHeartImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionHeartImage, ReactionHeartImageAdmin)
+
+class ReactionWordImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionWordImage, ReactionWordImageAdmin)
+
+class ReactionPartyImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview']
+    readonly_fields = ['image_preview']
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.ReactionPartyImage, ReactionPartyImageAdmin)

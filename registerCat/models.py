@@ -168,3 +168,24 @@ class ColumnBlog(models.Model):
     description = models.TextField()
     class Meta:
         verbose_name_plural = 'コラムブログ'
+
+class ReactionCatImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/cat')
+
+class ReactionFoodImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/food')
+
+class ReactionHeartImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/heart')
+
+class ReactionPartyImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/party')
+
+class ReactionSeasonImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/season')
+
+class ReactionWordImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/word')
+
+class ReactionPartyImage(models.Model):
+    imgs = models.ImageField(upload_to='reaction/party')

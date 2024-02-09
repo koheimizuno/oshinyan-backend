@@ -24,7 +24,7 @@ class AvatarAdmin(admin.ModelAdmin):
         return False
     def image_preview(self, obj):
         if obj.avatar:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.avatar.url))
+            return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.avatar.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
