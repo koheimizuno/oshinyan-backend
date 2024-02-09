@@ -171,21 +171,30 @@ class ColumnBlog(models.Model):
 
 class ReactionCatImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/cat')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-猫ちゃん'
 
 class ReactionFoodImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/food')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-フード'
 
 class ReactionHeartImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/heart')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-気持ち'
 
 class ReactionPartyImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/party')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-パーティー'
 
 class ReactionSeasonImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/season')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-季節'
 
 class ReactionWordImage(models.Model):
     imgs = models.ImageField(upload_to='reaction/word')
-
-class ReactionPartyImage(models.Model):
-    imgs = models.ImageField(upload_to='reaction/party')
+    class Meta:
+        verbose_name_plural = '絵文字アイコン-メッセージ'
