@@ -2,7 +2,9 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Count
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
+from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from account.models import Member
@@ -14,7 +16,7 @@ from utils.send_email import send_email
 from utils.email_templates import cat_register_email
 
 class CatViewSet(viewsets.ModelViewSet):
-    queryset = models.Cat.objects.all()
+    queryset = models.Cat.objects.filter(is_public=True)
     serializer_class = serializers.CatSerializer
     def create(self, request, *args, **kwargs):
         cat_data = self.get_serializer(data=request.data)
@@ -78,11 +80,13 @@ class ColumnViewSet(viewsets.ModelViewSet):
 class ShopViewSet(viewsets.ModelViewSet):
     queryset = models.Shop.objects.all()
     serializer_class = serializers.ShopSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['shop_name', 'prefecture', 'shop_type']
+    search_fields = ['shop_name', 'prefecture']
     def create(self, request, *args, **kwargs):
         shop_data = self.get_serializer(data=request.data)
         images = request.FILES.getlist('imgs')
         shop_name = request.data.get('shop_name')
-        
         if shop_data.is_valid():
             if not models.Shop.objects.filter(shop_name=shop_name).exists():
                 item = shop_data.save()
@@ -119,6 +123,10 @@ class ShopViewSet(viewsets.ModelViewSet):
 class ShopImageViewSet(viewsets.ModelViewSet):
     queryset = models.ShopImage.objects.all()
     serializer_class = serializers.ShopImageSerializer
+
+class ShopTypeViewSet(viewsets.ModelViewSet):
+    queryset = models.ShopType.objects.all()
+    serializer_class = serializers.ShopTypeSerializer
 
 class RandomCatView(generics.ListCreateAPIView):
     queryset = models.Cat.objects.filter(is_public=True).order_by('?')[:9]

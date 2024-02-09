@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UnregisterShop, UnregisterShopImage, CatApply
+from .models import UnregisterShop, UnregisterShopImage, CatApply, ShopType
 from registerCat.serializers import CatSerializer
 
 class UnregisterShopImageSerializer(serializers.ModelSerializer):
@@ -27,4 +27,15 @@ class UnregisterShopSerializer(serializers.ModelSerializer):
 class CatApplySerializer(serializers.ModelSerializer):
     class Meta:
         model = CatApply
+        fields = "__all__"
+    def validate(self, data):
+        email = data.get('email')
+        if CatApply.objects.filter(email=email).exists():
+            raise serializers.ValidationError(
+                {'message': 'Email Address already exists'})
+        return data
+
+class ShopTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShopType
         fields = "__all__"

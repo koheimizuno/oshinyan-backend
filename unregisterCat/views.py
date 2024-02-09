@@ -3,8 +3,8 @@ from django.conf import settings
 # For Define API Views
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import  UnregisterShop, UnregisterShopImage, CatApply, CatApplyImage
-from .serializers import UnregisterShopSerializer, UnregisterShopImageSerializer, CatApplySerializer
+from .models import  UnregisterShop, UnregisterShopImage, CatApply, CatApplyImage, ShopType
+from .serializers import UnregisterShopSerializer, UnregisterShopImageSerializer, CatApplySerializer, ShopTypeSerializer
 
 from utils.send_email import send_email
 from utils.email_templates import cat_register_email
@@ -14,11 +14,12 @@ class UnregisterShopViewSet(viewsets.ModelViewSet):
     serializer_class = UnregisterShopSerializer
     def create(self, request, *args, **kwargs):
         shop_data = self.get_serializer(data=request.data)
+        shop_type_id = self.request.data.pop('shop_type', None)
         images = request.FILES.getlist('imgs')
         shop_name = request.data.get('shop_name')
-        
-        if shop_data.is_valid():
+        if shop_data.is_valid() and shop_type_id:
             if not UnregisterShop.objects.filter(shop_name=shop_name).exists():
+                shop_data.shop_type = ShopType.objects.get(id=shop_type_id)
                 item = shop_data.save()
                 for image in images:
                     UnregisterShopImage.objects.create(shop_id=item.id, imgs=image)
@@ -67,3 +68,7 @@ class CatApplyViewSet(viewsets.ModelViewSet):
             return Response(catapply_data.data, status=status.HTTP_201_CREATED)
         else:
             return Response({'errors': catapply_data.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+class ShopTypeViewSet(viewsets.ModelViewSet):
+    queryset = ShopType.objects.all()
+    serializer_class = ShopTypeSerializer

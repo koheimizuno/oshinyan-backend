@@ -49,6 +49,7 @@ ADDTIONAL_INSTALLED_APPS = [
     'rest_framework.authtoken',
     'whitenoise.runserver_nostatic',
     'admin_reorder',
+    'django_filters',
     'account',
     'unregisterCat',
     'registerCat',
@@ -64,6 +65,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 MIDDLEWARE = [

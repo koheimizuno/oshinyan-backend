@@ -116,6 +116,7 @@ class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shop
         fields = '__all__'
+        depth = 1
     def validate(self, data):
         email = data.get('email')
         shop_name = data.get('shop_name')
@@ -126,3 +127,8 @@ class ShopSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'message': 'Shop Name already exists'})
         return data
+    
+class ShopTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShopType
+        fields = "__all__"

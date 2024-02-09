@@ -13,6 +13,7 @@ router.register(r'comment', views.CommentViewSet)
 router.register(r'advertise', views.AdvertiseViewSet)
 router.register(r'banner', views.BannerViewSet)
 router.register(r'column', views.ColumnViewSet)
+router.register(r'shoptype', views.ShopTypeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
