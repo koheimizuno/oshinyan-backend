@@ -140,14 +140,18 @@ class CommentImage(models.Model):
     class Meta:
         verbose_name_plural='画像'
 
+class CommentReactionIcon(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント')
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
+    imgs = models.URLField()
+    class Meta:
+        verbose_name_plural = 'コメント アイコン'
+
 class Banner(models.Model):
     image = models.ImageField(upload_to='topbanner', verbose_name='画像')
     url = models.CharField(blank=True)
     class Meta:
         verbose_name_plural = 'TOP上位のバナー'
-
-from django.utils import timezone
-
 
 class Column(models.Model):
     is_public = models.BooleanField(default=False, verbose_name='公開')
@@ -169,32 +173,32 @@ class ColumnBlog(models.Model):
     class Meta:
         verbose_name_plural = 'コラムブログ'
 
-class ReactionCatImage(models.Model):
+class ReactionCatIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/cat')
     class Meta:
         verbose_name_plural = '絵文字アイコン-猫ちゃん'
 
-class ReactionFoodImage(models.Model):
+class ReactionFoodIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/food')
     class Meta:
         verbose_name_plural = '絵文字アイコン-フード'
 
-class ReactionHeartImage(models.Model):
+class ReactionHeartIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/heart')
     class Meta:
         verbose_name_plural = '絵文字アイコン-気持ち'
 
-class ReactionPartyImage(models.Model):
+class ReactionPartyIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/party')
     class Meta:
         verbose_name_plural = '絵文字アイコン-パーティー'
 
-class ReactionSeasonImage(models.Model):
+class ReactionSeasonIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/season')
     class Meta:
         verbose_name_plural = '絵文字アイコン-季節'
 
-class ReactionWordImage(models.Model):
+class ReactionWordIcon(models.Model):
     imgs = models.ImageField(upload_to='reaction/word')
     class Meta:
         verbose_name_plural = '絵文字アイコン-メッセージ'

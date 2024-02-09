@@ -216,80 +216,70 @@ class ShopAdmin(admin.ModelAdmin):
     inlines = [ShopImageInline]
 admin.site.register(models.Shop, ShopAdmin)
 
-class ReactionCatImageAdmin(admin.ModelAdmin):
+class ReactionCatIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionCatImage, ReactionCatImageAdmin)
+admin.site.register(models.ReactionCatIcon, ReactionCatIconAdmin)
 
-class ReactionFoodImageAdmin(admin.ModelAdmin):
+class ReactionFoodIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionFoodImage, ReactionFoodImageAdmin)
+admin.site.register(models.ReactionFoodIcon, ReactionFoodIconAdmin)
 
-class ReactionSeasonImageAdmin(admin.ModelAdmin):
+class ReactionSeasonIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionSeasonImage, ReactionSeasonImageAdmin)
+admin.site.register(models.ReactionSeasonIcon, ReactionSeasonIconAdmin)
 
-class ReactionHeartImageAdmin(admin.ModelAdmin):
+class ReactionHeartIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionHeartImage, ReactionHeartImageAdmin)
+admin.site.register(models.ReactionHeartIcon, ReactionHeartIconAdmin)
 
-class ReactionWordImageAdmin(admin.ModelAdmin):
+class ReactionWordIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionWordImage, ReactionWordImageAdmin)
+admin.site.register(models.ReactionWordIcon, ReactionWordIconAdmin)
 
-class ReactionPartyImageAdmin(admin.ModelAdmin):
+class ReactionPartyIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.imgs:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.imgs.url))
         else:
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.ReactionPartyImage, ReactionPartyImageAdmin)
+admin.site.register(models.ReactionPartyIcon, ReactionPartyIconAdmin)
+
+class CommentReactionIconOption(admin.ModelAdmin):
+    list_display = ['id', 'comment', 'user', 'image_preview']
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe(f'<img src="{obj.imgs}" style="max-width:40px;max-height:40px;" />')
+        return "No Image Preview Available"
+admin.site.register(models.CommentReactionIcon, CommentReactionIconOption)

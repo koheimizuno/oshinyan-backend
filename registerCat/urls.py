@@ -14,6 +14,13 @@ router.register(r'advertise', views.AdvertiseViewSet)
 router.register(r'banner', views.BannerViewSet)
 router.register(r'column', views.ColumnViewSet)
 router.register(r'shoptype', views.ShopTypeViewSet)
+router.register(r'reactioncat', views.ReactionCatIconViewSet)
+router.register(r'reactionfood', views.ReactionFoodIconViewSet)
+router.register(r'reactionword', views.ReactionWordIconViewSet)
+router.register(r'reactionparty', views.ReactionPartyIconViewSet)
+router.register(r'reactionseason', views.ReactionSeasonIconViewSet)
+router.register(r'reactionheart', views.ReactionHeartIconViewSet)
+router.register(r'commentreactionicon', views.CommentReactionIconViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -128,6 +128,34 @@ class ShopTypeViewSet(viewsets.ModelViewSet):
     queryset = models.ShopType.objects.all()
     serializer_class = serializers.ShopTypeSerializer
 
+class ReactionCatIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionCatIcon.objects.all()
+    serializer_class = serializers.ReactionCatIconSerializer
+
+class ReactionFoodIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionFoodIcon.objects.all()
+    serializer_class = serializers.ReactionFoodIconSerializer
+
+class ReactionWordIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionWordIcon.objects.all()
+    serializer_class = serializers.ReactionWordIconSerializer
+
+class ReactionPartyIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionPartyIcon.objects.all()
+    serializer_class = serializers.ReactionPartyIconSerializer
+
+class ReactionHeartIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionHeartIcon.objects.all()
+    serializer_class = serializers.ReactionHeartIconSerializer
+
+class ReactionSeasonIconViewSet(viewsets.ModelViewSet):
+    queryset = models.ReactionSeasonIcon.objects.all()
+    serializer_class = serializers.ReactionSeasonIconSerializer
+
+class CommentReactionIconViewSet(viewsets.ModelViewSet):
+    queryset = models.CommentReactionIcon.objects.all()
+    serializer_class = serializers.CommentReactionIconSerializer
+
 class RandomCatView(generics.ListCreateAPIView):
     queryset = models.Cat.objects.filter(is_public=True).order_by('?')[:9]
     serializer_class = serializers.CatSerializer

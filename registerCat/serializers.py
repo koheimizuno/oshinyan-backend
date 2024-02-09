@@ -132,3 +132,38 @@ class ShopTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ShopType
         fields = "__all__"
+
+class ReactionCatIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionCatIcon
+        fields = "__all__"
+
+class ReactionFoodIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionFoodIcon
+        fields = "__all__"
+
+class ReactionWordIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionWordIcon
+        fields = "__all__"
+
+class ReactionHeartIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionHeartIcon
+        fields = "__all__"
+
+class ReactionSeasonIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionSeasonIcon
+        fields = "__all__"
+
+class ReactionPartyIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ReactionPartyIcon
+        fields = "__all__"
+
+class CommentReactionIconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CommentReactionIcon
+        fields = "__all__"
