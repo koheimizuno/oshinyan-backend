@@ -31,7 +31,7 @@ class ShopImage(models.Model):
         Shop, on_delete=models.CASCADE, related_name='shop_images')
     imgs = models.ImageField(upload_to='unregistershop')
     class Meta:
-        verbose_name_plural = "画像"
+        verbose_name_plural = "店舗画像"
     def __int__(self):
         return self.shop
 

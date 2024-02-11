@@ -199,6 +199,10 @@ class ColumnBlogOption(admin.ModelAdmin):
     list_display = [field.name for field in models.ColumnBlog._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.ColumnBlog, ColumnBlogOption)
 
+class ShopImageOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.ShopImage._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.ShopImage, ShopImageOption)
+
 class ShopImageInline(admin.TabularInline):
     model = models.ShopImage
     extra = 0
