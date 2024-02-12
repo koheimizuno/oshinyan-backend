@@ -6,14 +6,10 @@ from . import models
 class CatImageByAdminInline(admin.TabularInline):
     model = models.CatImageByAdmin
     extra = 1
-    # def has_change_permission(self, request, obj=None):
-    #     return False
 
 class CatImageInline(admin.TabularInline):
     model = models.CatImage
     extra = 1
-    # def has_change_permission(self, request, obj=None):
-    #     return False
 
 class CatAdmin(admin.ModelAdmin):
     list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin']
@@ -81,8 +77,6 @@ admin.site.register(models.CommentImage, CommentImageAdmin)
 class CommentImageInline(admin.TabularInline):
     model = models.CommentImage
     extra = 0
-    def has_change_permission(self, request, obj=None):
-        return False
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images']
@@ -106,14 +100,10 @@ admin.site.register(models.Comment, CommentAdmin)
 class AdvertiseImageInline(admin.TabularInline):
     model = models.AdvertiseImage
     extra = 1
-    # def has_change_permission(self, request, obj=None):
-    #     return False
 
 class AdvertiseImageByAdminInline(admin.TabularInline):
     model = models.AdvertiseImageByAdmin
     extra = 1
-    # def has_change_permission(self, request, obj=None):
-    #     return False
 
 class AdvertiseAdmin(admin.ModelAdmin):
     list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'advertise_with_images', 'advertise_with_images_admin']
@@ -154,9 +144,6 @@ admin.site.register(models.Advertise, AdvertiseAdmin)
 
 class BannerAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview', 'url']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.image:
             return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.image.url))
@@ -168,8 +155,6 @@ admin.site.register(models.Banner, BannerAdmin)
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
     extra = 1
-    # def has_change_permission(self, request, obj=None):
-    #     return False
 
 class ColumnAdmin(admin.ModelAdmin):
     list_display = ['id', 'is_public', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
@@ -226,8 +211,6 @@ admin.site.register(models.ShopImage, ShopImageOption)
 class ShopImageInline(admin.TabularInline):
     model = models.ShopImage
     extra = 0
-    def has_change_permission(self, request, obj=None):
-        return False
 
 class ShopAdmin(admin.ModelAdmin):
     list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images', 'last_update']

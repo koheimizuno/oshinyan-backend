@@ -5,8 +5,6 @@ from .models import UnregisterShop, UnregisterShopImage, CatApply, CatApplyImage
 class CatApplyImageInline(admin.TabularInline):
     model = CatApplyImage
     extra = 0
-    def has_change_permission(self, request, obj=None):
-        return False
 
 class CatApplyAdmin(admin.ModelAdmin):
     list_display = ['id', 'client_type', 'company_name', 'kanji_name', 'furi_name', 'email', 'shop_type', 'cat_info', 'catapply_with_images']
@@ -22,8 +20,6 @@ admin.site.register(CatApply, CatApplyAdmin)
 class UnregisterShopImageInline(admin.TabularInline):
     model = UnregisterShopImage
     extra = 0
-    def has_change_permission(self, request, obj=None):
-        return False
 
 class UnregisterShopAdmin(admin.ModelAdmin):
     list_display = ['id', 'shop_permission', 'shop_name', 'prefecture', 'city', 'street', 'detail_address', 'email', 'phone', 'cat_info', 'shop_with_images', 'last_update']

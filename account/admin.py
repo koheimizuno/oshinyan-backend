@@ -31,9 +31,6 @@ admin.site.register(Member, MemberAdmin)
 
 class AvatarAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
-    readonly_fields = ['image_preview']
-    def has_change_permission(self, request, obj=None):
-        return False
     def image_preview(self, obj):
         if obj.avatar:
             return mark_safe('<img src="{0}" style="max-height: 40px; max-width: 40px;" />'.format(obj.avatar.url))
