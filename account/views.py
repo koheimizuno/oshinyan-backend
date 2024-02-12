@@ -64,6 +64,7 @@ class TokenLoginView(APIView):
             'user_id': user.id,
             'username': user.username,
             'email': user.email,
+            'avatar': AvatarSerializer(user.avatar, context={'request': request}).data if user.avatar else None
         }
         return Response(user_info)
 
