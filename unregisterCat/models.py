@@ -19,7 +19,7 @@ class UnregisterShop(models.Model):
 
     def __str__(self):
         return self.shop_name
-
+    
 class UnregisterShopImage(models.Model):
     shop = models.ForeignKey(
         UnregisterShop, on_delete=models.CASCADE, related_name='shop_images')

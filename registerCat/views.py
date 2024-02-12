@@ -18,7 +18,6 @@ from utils.email_templates import cat_register_email
 class CatViewSet(viewsets.ModelViewSet):
     queryset = models.Cat.objects.filter(is_public=True)
     serializer_class = serializers.CatSerializer
-    permission_classes = [IsAuthenticated]
     
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
@@ -122,37 +121,30 @@ class ShopTypeViewSet(viewsets.ModelViewSet):
 class ReactionCatIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionCatIcon.objects.all()
     serializer_class = serializers.ReactionCatIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class ReactionFoodIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionFoodIcon.objects.all()
     serializer_class = serializers.ReactionFoodIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class ReactionWordIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionWordIcon.objects.all()
     serializer_class = serializers.ReactionWordIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class ReactionPartyIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionPartyIcon.objects.all()
     serializer_class = serializers.ReactionPartyIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class ReactionHeartIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionHeartIcon.objects.all()
     serializer_class = serializers.ReactionHeartIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class ReactionSeasonIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionSeasonIcon.objects.all()
     serializer_class = serializers.ReactionSeasonIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class CommentReactionIconViewSet(viewsets.ModelViewSet):
     queryset = models.CommentReactionIcon.objects.all()
     serializer_class = serializers.CommentReactionIconSerializer
-    permission_classes = [IsAuthenticated]
 
 class RandomCatView(generics.ListCreateAPIView):
     queryset = models.Cat.objects.filter(is_public=True).order_by('?')[:9]
@@ -252,7 +244,6 @@ class RecommendView(generics.ListCreateAPIView):
     
 class CommentListView(generics.ListAPIView):
     serializer_class = serializers.CommentListSerializer
-    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         cat_id = self.request.query_params.get('cat_id')
         if cat_id is not None:
@@ -271,20 +262,6 @@ class CommentByUserListView(generics.ListAPIView):
         if user_id is not None:
             try:
                 return models.Comment.objects.filter(user=user_id)
-            except ValueError:
-                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
-
-class CommentByUserCatListView(generics.ListAPIView):
-    serializer_class = serializers.CommentListSerializer
-    permission_classes = [IsAuthenticated]
-    def get_queryset(self):
-        user_id = self.request.user.id
-        cat_id = self.request.query_params.get('cat_id')
-        if user_id is not None and cat_id is not None:
-            try:
-                return models.Comment.objects.filter(user=user_id, cat=cat_id)
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:

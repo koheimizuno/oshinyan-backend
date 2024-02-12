@@ -14,12 +14,12 @@ class UnregisterShopViewSet(viewsets.ModelViewSet):
     serializer_class = UnregisterShopSerializer
     def create(self, request, *args, **kwargs):
         shop_data = self.get_serializer(data=request.data)
-        shop_type_id = self.request.data.pop('shop_type', None)
+        # shop_type_id = self.request.data.pop('shop_type', None)
         images = request.FILES.getlist('imgs')
         shop_name = request.data.get('shop_name')
-        if shop_data.is_valid() and shop_type_id:
+        if shop_data.is_valid():
             if not UnregisterShop.objects.filter(shop_name=shop_name).exists():
-                shop_data.shop_type = ShopType.objects.get(id=shop_type_id)
+                # shop_data.shop_type = ShopType.objects.get(id=shop_type_id)
                 item = shop_data.save()
                 for image in images:
                     UnregisterShopImage.objects.create(shop_id=item.id, imgs=image)

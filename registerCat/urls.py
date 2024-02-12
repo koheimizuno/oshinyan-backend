@@ -35,5 +35,4 @@ urlpatterns = [
     path('usercat', views.UserCatListView.as_view(), name='usercat'),
     path('comment', views.CommentListView.as_view(), name='comment'),
     path('commentbyuser', views.CommentByUserListView.as_view(), name='commentbyuser'),
-    path('commentbyusercat', views.CommentByUserCatListView.as_view(), name='commentbyusercat'),
 ]
