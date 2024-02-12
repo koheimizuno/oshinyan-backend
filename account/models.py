@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django_resized import ResizedImageField
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, avatar=None, password=None, prefecture=''):
@@ -26,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
     
 class Avatar(models.Model):
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    avatar = ResizedImageField(force_format="WEBP", quality=75, upload_to="avatars")
     class Meta:
         verbose_name_plural = "プロフィール画像"
 

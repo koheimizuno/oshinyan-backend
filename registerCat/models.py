@@ -1,6 +1,7 @@
 from django.db import models
 from account.models import Member
 from utils.constants import PREFECTURE_CHOICES, ATTENDANCE_CHOICES
+from django_resized import ResizedImageField
 
 class ShopType(models.Model):
     shop_type = models.CharField(max_length=50)
@@ -29,7 +30,7 @@ class Shop(models.Model):
 class ShopImage(models.Model):
     shop = models.ForeignKey(
         Shop, on_delete=models.CASCADE, related_name='shop_images')
-    imgs = models.ImageField(upload_to='unregistershop')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="shop")
     class Meta:
         verbose_name_plural = "店舗画像"
     def __int__(self):
@@ -69,7 +70,7 @@ class Cat(models.Model):
 class CatImage(models.Model):
     cat = models.ForeignKey(
         Cat, on_delete=models.CASCADE, related_name='images')
-    imgs = models.ImageField(upload_to='cat/images')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="cat/images")
     def __int__(self):
         return f"Image of {self.cat}"
     class Meta:
@@ -78,7 +79,7 @@ class CatImage(models.Model):
 class CatImageByAdmin(models.Model):
     cat = models.ForeignKey(
         Cat, on_delete=models.CASCADE, related_name='admin_images')
-    imgs = models.ImageField(upload_to='cat/admin_images')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="cat/admin_images")
     def __int__(self):
         return f"Image of {self.cat}"
     class Meta:
@@ -104,14 +105,14 @@ class Advertise(models.Model):
 class AdvertiseImage(models.Model):
     cat = models.ForeignKey(
         Advertise, on_delete=models.CASCADE, related_name='images')
-    imgs = models.ImageField(upload_to='advertise/images')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="advertise/images")
     class Meta:
         verbose_name_plural = '画像'
     
 class AdvertiseImageByAdmin(models.Model):
     cat = models.ForeignKey(
         Advertise, on_delete=models.CASCADE, related_name='admin_images')
-    imgs = models.ImageField(upload_to='advertise/admin_images')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="advertise/admin_images")
     def __int__(self):
         return f"Image of {self.cat}"
     class Meta:
@@ -136,7 +137,7 @@ class Comment(models.Model):
 class CommentImage(models.Model):
     comment = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name='comment_images')
-    imgs = models.ImageField(upload_to='comment')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="comment")
     class Meta:
         verbose_name_plural='コメント画像'
 
@@ -154,7 +155,7 @@ class CommentReactionIcon(models.Model):
         verbose_name_plural = 'コメント アイコン'
 
 class Banner(models.Model):
-    image = models.ImageField(upload_to='topbanner', verbose_name='画像')
+    image = ResizedImageField(force_format="WEBP", quality=75, upload_to="topbanner", verbose_name='画像')
     url = models.CharField(blank=True)
     class Meta:
         verbose_name_plural = 'TOP上位のバナー'
@@ -162,9 +163,9 @@ class Banner(models.Model):
 class Column(models.Model):
     is_public = models.BooleanField(default=False, verbose_name='公開')
     title = models.CharField()
-    hero_image = models.ImageField(upload_to='column/hero_images')
+    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images")
     cat_name = models.CharField(max_length=100)
-    detail_image = models.ImageField(upload_to='column/detail_images')
+    detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
     subtitle = models.CharField()
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
@@ -173,38 +174,38 @@ class Column(models.Model):
 
 class ColumnBlog(models.Model):
     column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog')
-    imgs = models.ImageField(upload_to='column/blog_images')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
     img_caption = models.CharField()
     description = models.TextField()
     class Meta:
         verbose_name_plural = 'コラムブログ'
 
 class ReactionCatIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/cat')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="reaction/cat")
     class Meta:
         verbose_name_plural = '絵文字アイコン-猫ちゃん'
 
 class ReactionFoodIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/food')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="reaction/food")
     class Meta:
         verbose_name_plural = '絵文字アイコン-フード'
 
 class ReactionHeartIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/heart')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="reaction/heart")
     class Meta:
         verbose_name_plural = '絵文字アイコン-気持ち'
 
 class ReactionPartyIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/party')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to='reaction/party')
     class Meta:
         verbose_name_plural = '絵文字アイコン-パーティー'
 
 class ReactionSeasonIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/season')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to='reaction/season')
     class Meta:
         verbose_name_plural = '絵文字アイコン-季節'
 
 class ReactionWordIcon(models.Model):
-    imgs = models.ImageField(upload_to='reaction/word')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to='reaction/word')
     class Meta:
         verbose_name_plural = '絵文字アイコン-メッセージ'

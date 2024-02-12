@@ -192,7 +192,7 @@ class ShopViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'errors': shop_data.errors}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 class ShopImageViewSet(viewsets.ModelViewSet):
     queryset = models.ShopImage.objects.all()
     serializer_class = serializers.ShopImageSerializer

@@ -137,6 +137,11 @@ class ShopTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ShopType
         fields = "__all__"
+    def validate(self, attrs):
+        shop_type = attrs.get('shop_type')
+        if models.ShopType.objects.filter(shop_type=shop_type).exists():
+            raise serializers.ValidationError("shop_type field is required.")
+        return attrs
 
 class ReactionCatIconSerializer(serializers.ModelSerializer):
     class Meta:

@@ -214,7 +214,13 @@ class ColumnBlogOption(admin.ModelAdmin):
 admin.site.register(models.ColumnBlog, ColumnBlogOption)
 
 class ShopImageOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.ShopImage._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+    list_display = ['id', 'shop', 'shop_with_images']
+    def shop_with_images(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    shop_with_images.short_description = 'プロフィール画像'
 admin.site.register(models.ShopImage, ShopImageOption)
 
 class ShopImageInline(admin.TabularInline):
