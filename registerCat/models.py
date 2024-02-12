@@ -19,7 +19,7 @@ class Shop(models.Model):
     phone = models.CharField(max_length=20, verbose_name='電話番号（登録者）')
     business_time = models.CharField(verbose_name='営業時間')
     rest_day = models.CharField(verbose_name='定休日')
-    url = models.URLField(verbose_name='店舗ホームページ')
+    url = models.URLField(blank=True, verbose_name='店舗ホームページ')
     last_update = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural = "店舗"
