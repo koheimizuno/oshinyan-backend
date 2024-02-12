@@ -54,6 +54,11 @@ class CommentSerializer(serializers.ModelSerializer):
         model = models.Comment
         fields='__all__'
 
+class CommentImageRecommendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CommentImageRecommend
+        fields = "__all__"
+
 class CommentListSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)
     class Meta:

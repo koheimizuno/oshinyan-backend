@@ -138,7 +138,13 @@ class CommentImage(models.Model):
         Comment, on_delete=models.CASCADE, related_name='comment_images')
     imgs = models.ImageField(upload_to='comment')
     class Meta:
-        verbose_name_plural='画像'
+        verbose_name_plural='コメント画像'
+
+class CommentImageRecommend(models.Model):
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
+    comment_image = models.ForeignKey(CommentImage, on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント画像')
+    class Meta:
+        verbose_name_plural='コメント画像推し'
 
 class CommentReactionIcon(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント')

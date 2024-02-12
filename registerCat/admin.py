@@ -64,6 +64,20 @@ class FavoriteThingOption(admin.ModelAdmin):
     list_display = [field.name for field in models.FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.FavoriteThing, FavoriteThingOption)
 
+class CommentImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'comment', 'comment_image_preview']
+    def comment_image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    comment_image_preview.short_description = 'プロフィール画像'
+admin.site.register(models.CommentImage, CommentImageAdmin)
+
+# class CommentImageRecommendOption(admin.ModelAdmin):
+#     list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+# admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
+
 class CommentImageInline(admin.TabularInline):
     model = models.CommentImage
     extra = 0
