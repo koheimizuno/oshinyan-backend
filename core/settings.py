@@ -48,6 +48,7 @@ ADDTIONAL_INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'whitenoise.runserver_nostatic',
+    'django_cleanup',
     'admin_reorder',
     'django_filters',
     'account',
@@ -195,3 +196,9 @@ ADMIN_REORDER = (
     {'app': 'unregisterCat', 'models' : ('unregisterCat.UnregisterShop', 'unregisterCat.CatApply')},
     {'app': 'other', 'models' : ('other.Ambassador', 'other.Inquiry', 'other.Banner')},
 )
+
+# Delete files when corresponding object is deleted
+CLEANUP_DELETE_FILES = True
+
+# Delete empty folders along with files
+CLEANUP_DELETE_EMPTY_FOLDERS = True
