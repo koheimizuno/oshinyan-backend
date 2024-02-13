@@ -17,7 +17,7 @@ register_email = """
     </p>
     <p>
         <span>ログイン画面</span>
-        <a href="http://192.168.145.200/login/">https://oshinyan.love/login/</a>
+        <a href="http://162.43.50.92/login/">https://oshinyan.love/login/</a>
     </p>
     <p>
         「推しニャン」サイト事務局より
@@ -30,7 +30,7 @@ register_email = """
         にゃんこ好きな方には、アンバサダーになってください。<br />
         きっといいことがあります♪<br />
         登録はこちら↓<br />
-        <a href="http://192.168.145.200/ambassador/">https://oshinyan.love/ambassador/</a>
+        <a href="http://162.43.50.92/ambassador/">https://oshinyan.love/ambassador/</a>
         <br />
         ♡♡♡♡♡♡♡♡♡♡♡♡♡
     </p>
@@ -106,7 +106,7 @@ cat_register_email = """
         にゃんこ好きな方には、アンバサダーになってください。<br/>
         きっといいことがあります♪<br/>
         登録はこちら↓<br/>
-        <a href="http://192.168.145.200/ambassador/">https://oshinyan.love/ambassador/</a>
+        <a href="http://162.43.50.92/ambassador/">https://oshinyan.love/ambassador/</a>
         <br />
         ♡♡♡♡♡♡♡♡♡♡♡♡♡
     </p>

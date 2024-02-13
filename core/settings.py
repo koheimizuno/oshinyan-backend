@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-d=szegh%23&@*-_e4bq+j$*iiiet@^gy5qrtqr3kmah5mloj+f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.145.200']
+ALLOWED_HOSTS = ['162.43.50.92']
 
 
 # Application definition
@@ -172,7 +172,7 @@ CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_HEADERS = ['X-CSRFTOKEN', 'content-type']
 
 CORS_ALLOWED_ORIGINS = [
-   'http://192.168.145.200'
+   'http://162.43.50.92'
 ]
 
 CORS_ALLOW_METHODS = [
@@ -187,7 +187,7 @@ CORS_ALLOW_METHODS = [
 MAIL_API_KEY = env('MAIL_API_KEY')
 BACKEND_EMAIL = env('BACKEND_EMAIL')
 
-FRONT_URL = 'http://192.168.145.200'
+FRONT_URL = 'http://162.43.50.92'
 
 # For reorder apps and models in admin page
 ADMIN_REORDER = (
