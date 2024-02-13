@@ -1,6 +1,6 @@
 from django.db import models
 from account.models import Member
-from utils.constants import PREFECTURE_CHOICES, ATTENDANCE_CHOICES
+from utils.constants import PREFECTURE_CHOICES, ATTENDANCE_CHOICES, CAT_GENDER
 from django_resized import ResizedImageField
 
 class ShopType(models.Model):
@@ -55,6 +55,8 @@ class Cat(models.Model):
     shop = models.ForeignKey(
         Shop, on_delete=models.CASCADE, related_name='cat', verbose_name='店舗')
     cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
+    gender = models.CharField(max_length=6, choices=CAT_GENDER, default='男の子', verbose_name='性別', blank=True, null=True)
+    birthday = models.DateField(verbose_name='生年月日', blank=True, null=True)
     character = models.ManyToManyField(Character, verbose_name='性格')
     favorite_things = models.ManyToManyField(FavoriteThing, verbose_name='好きなもの・コト')
     attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='毎日', verbose_name='出没頻度')

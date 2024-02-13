@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
     
 class Avatar(models.Model):
-    avatar = ResizedImageField(force_format="WEBP", quality=75, upload_to="avatars")
+    avatar = ResizedImageField(force_format="WEBP", quality=75, upload_to="avatars", blank=True, null=True)
     class Meta:
         verbose_name_plural = "プロフィール画像"
 
