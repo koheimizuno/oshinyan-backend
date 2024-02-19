@@ -4,7 +4,7 @@ from utils.constants import PREFECTURE_CHOICES, ATTENDANCE_CHOICES, CAT_GENDER
 from django_resized import ResizedImageField
 
 class ShopType(models.Model):
-    shop_type = models.CharField(max_length=50)
+    shop_type = models.CharField(max_length=50, verbose_name='店舗種別')
     class Meta:
         verbose_name_plural = "店舗カテゴリ"
     def __str__(self):
@@ -29,7 +29,7 @@ class Shop(models.Model):
 
 class ShopImage(models.Model):
     shop = models.ForeignKey(
-        Shop, on_delete=models.CASCADE, related_name='shop_images')
+        Shop, on_delete=models.CASCADE, related_name='shop_images', verbose_name='店舗')
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="shop")
     class Meta:
         verbose_name_plural = "店舗画像"
@@ -138,7 +138,7 @@ class Comment(models.Model):
 
 class CommentImage(models.Model):
     comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name='comment_images')
+        Comment, on_delete=models.CASCADE, related_name='comment_images', verbose_name='コメント')
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="comment")
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:

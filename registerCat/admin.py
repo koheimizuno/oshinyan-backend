@@ -64,43 +64,6 @@ class FavoriteThingOption(admin.ModelAdmin):
     list_display = [field.name for field in models.FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.FavoriteThing, FavoriteThingOption)
 
-class CommentImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'comment', 'comment_image_preview']
-    def comment_image_preview(self, obj):
-        if obj.imgs:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
-        else:
-            return '(No image)'
-    comment_image_preview.short_description = 'プロフィール画像'
-admin.site.register(models.CommentImage, CommentImageAdmin)
-
-# class CommentImageRecommendOption(admin.ModelAdmin):
-#     list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-# admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
-
-class CommentImageInline(admin.TabularInline):
-    model = models.CommentImage
-    extra = 0
-
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images']
-    def formatted_comment(self, obj):
-        max_length = 50
-        comment = obj.comment
-        if len(comment) > max_length:
-            return mark_safe(f'{comment[:max_length]}...')
-        return comment
-
-    formatted_comment.short_description = 'Description'
-    def comment_with_images(self, obj):
-        images = obj.comment_images.all()
-        if images:
-            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
-        return 'No Images'
-    comment_with_images.short_description = 'Comment Images'
-    inlines = [CommentImageInline]
-admin.site.register(models.Comment, CommentAdmin)
-
 class AdvertiseImageInline(admin.TabularInline):
     model = models.AdvertiseImage
     extra = 1
@@ -153,7 +116,7 @@ class BannerAdmin(admin.ModelAdmin):
             return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.image.url))
         else:
             return '(No image)'
-    image_preview.short_description = 'Image Preview'
+    image_preview.short_description = '画像'
 admin.site.register(models.Banner, BannerAdmin)
 
 class ColumnBlogInline(admin.TabularInline):
@@ -230,15 +193,73 @@ class ShopImageInline(admin.TabularInline):
     extra = 0
 
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images', 'created_date']
+    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
     def shop_with_images(self, obj):
         images = obj.shop_images.all()
         if images:
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
-    shop_with_images.short_description = 'Shop Images'
+    shop_with_images.short_description = '店舗画像'
     inlines = [ShopImageInline]
 admin.site.register(models.Shop, ShopAdmin)
+
+class CommentImageInline(admin.TabularInline):
+    model = models.CommentImage
+    extra = 0
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images']
+    def has_add_permission(self, request):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def formatted_comment(self, obj):
+        max_length = 50
+        comment = obj.comment
+        if len(comment) > max_length:
+            return mark_safe(f'{comment[:max_length]}...')
+        return comment
+
+    formatted_comment.short_description = 'コメント説明'
+    def comment_with_images(self, obj):
+        images = obj.comment_images.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
+        return 'No Images'
+    comment_with_images.short_description = 'コメント画像'
+    inlines = [CommentImageInline]
+admin.site.register(models.Comment, CommentAdmin)
+
+class CommentImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'comment', 'comment_image_preview']
+    def comment_image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    comment_image_preview.short_description = 'プロフィール画像'
+    def has_add_permission(self, request):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+admin.site.register(models.CommentImage, CommentImageAdmin)
+
+# class CommentImageRecommendOption(admin.ModelAdmin):
+#     list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+# admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
+
+class CommentReactionIconOption(admin.ModelAdmin):
+    list_display = ['id', 'comment', 'user', 'image_preview']
+    def has_add_permission(self, request):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def image_preview(self, obj):
+        if obj.imgs:
+            return mark_safe(f'<img src="{obj.imgs}" style="max-width:40px;max-height:40px;" />')
+        return "No Image Preview Available"
+    image_preview.short_description = 'コメント アイコン'
+admin.site.register(models.CommentReactionIcon, CommentReactionIconOption)
 
 class ReactionCatIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
@@ -299,11 +320,3 @@ class ReactionPartyIconAdmin(admin.ModelAdmin):
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
 admin.site.register(models.ReactionPartyIcon, ReactionPartyIconAdmin)
-
-class CommentReactionIconOption(admin.ModelAdmin):
-    list_display = ['id', 'comment', 'user', 'image_preview']
-    def image_preview(self, obj):
-        if obj.imgs:
-            return mark_safe(f'<img src="{obj.imgs}" style="max-width:40px;max-height:40px;" />')
-        return "No Image Preview Available"
-admin.site.register(models.CommentReactionIcon, CommentReactionIconOption)

@@ -20,7 +20,7 @@ class CustomAdminSite(AdminSite):
 custom_admin_site = CustomAdminSite(name='customadmin')
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ['id', 'avatar_preview', 'username', 'email', 'prefecture', 'is_active', 'is_staff', 'is_superuser', 'created_date']
+    list_display = ['id', 'avatar_preview', 'username', 'email', 'prefecture', 'is_active', 'is_staff', 'is_superuser', 'created_date', 'last_login']
     readonly_fields = ['avatar_preview']
     def avatar_preview(self, obj):
         if obj.avatar:
