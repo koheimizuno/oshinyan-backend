@@ -39,7 +39,8 @@ class Member(AbstractBaseUser, PermissionsMixin):
         Avatar, on_delete=models.CASCADE, related_name='avatar_url', blank=True, null=True, verbose_name='プロフィール画像')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    last_login = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

@@ -1,12 +1,13 @@
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Count
+from django.utils import timezone
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
 from rest_framework import filters
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from account.models import Member
 from account.serializers import MemberSerializer
 from . import models
@@ -17,8 +18,13 @@ from utils.email_templates import cat_register_email
 
 # For Cat Start
 class CatViewSet(viewsets.ModelViewSet):
-    queryset = models.Cat.objects.filter(is_public=True)
+    queryset = models.Cat.objects.all()
     serializer_class = serializers.CatSerializer
+
+class CatTestViewSet(viewsets.ModelViewSet):
+    queryset = models.Cat.objects.all().order_by('-created_date')
+    serializer_class = serializers.CatSerializer
+    permission_classes = [IsAdminUser]
     
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
@@ -49,7 +55,7 @@ class RandomCatView(generics.ListCreateAPIView):
 class TotalRankingCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
     def get_queryset(self):
-        return models.Cat.objects.filter(is_public=True).annotate(recommend_count=Count('recommend')).order_by('-recommend_count', 'last_update')
+        return models.Cat.objects.filter(is_public=True).annotate(recommend_count=Count('recommend')).order_by('-recommend_count', 'created_date')
 
 class MonthRankingCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
@@ -60,7 +66,7 @@ class MonthRankingCatView(generics.ListAPIView):
                 date = datetime.strptime(date_param, '%Y-%m-%d').date()
                 end_date = date
                 start_date = end_date - timedelta(days=32)
-                return models.Cat.objects.filter(is_public=True, last_update__gte=start_date, last_update__lte=end_date).annotate(recommend_count=Count('recommend')).order_by('-recommend_count', 'last_update')
+                return models.Cat.objects.filter(is_public=True, created_date__gte=start_date, created_date__lte=end_date).annotate(recommend_count=Count('recommend')).order_by('-recommend_count', 'created_date')
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -72,7 +78,7 @@ class SearchPrefectureCatView(generics.ListAPIView):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
             queryset = models.Cat.objects.filter(shop__prefecture__in=keywords).annotate(recommend_count=Count('recommend')) \
-                .order_by('-recommend_count', 'last_update')
+                .order_by('-recommend_count', 'created_date')
             return queryset
         else:
             return models.Cat.objects.none()
@@ -83,7 +89,7 @@ class SearchCharacterCatView(generics.ListAPIView):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
             queryset = models.Cat.objects.filter(character__character__in=keywords).annotate(recommend_count=Count('recommend')) \
-                    .order_by('-recommend_count').order_by('last_update')
+                    .order_by('-recommend_count').order_by('created_date')
             return queryset
         else:
             return models.Cat.objects.none()
@@ -94,7 +100,7 @@ class SearchAttendanceCatView(generics.ListAPIView):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
             queryset = models.Cat.objects.filter(attendance__in=keywords).annotate(recommend_count=Count('recommend')) \
-                    .order_by('-recommend_count').order_by('last_update')
+                    .order_by('-recommend_count').order_by('created_date')
             return queryset
         else:
             return models.Cat.objects.none()
@@ -105,7 +111,7 @@ class SearchFreeCatView(generics.ListAPIView):
         keyword = self.request.query_params.get('keyword')
         if keyword:
             try:
-                return models.Cat.objects.filter(cat_name__icontains=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('last_update')
+                return models.Cat.objects.filter(cat_name__icontains=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('created_date')
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -183,7 +189,7 @@ class ShopViewSet(viewsets.ModelViewSet):
                                     「推しニャン」サイトに看板猫発見の依頼がありました。<br/>
                                     下記ご確認ください。
                                 </p>
-                                <p>日時：{shop_data.data['last_update']}</p>
+                                <p>日時：{shop_data.data['created_date']}</p>
                                 <p>
                                     <span>店舗名：{shop_data.data['shop_name']}</span><br />
                                     <span>住所：{shop_data.data['prefecture'], shop_data.data['city'], shop_data['street'], shop_data.data['detail_address']}</span><br />
@@ -251,6 +257,11 @@ class CommentByUserListView(generics.ListAPIView):
         else:
             return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
         
+class CommentImageViewSet(viewsets.ModelViewSet):
+    queryset = models.CommentImage.objects.all()
+    serializer_class = serializers.CommentImageSerializer
+    permission_classes = [IsAuthenticated]
+        
 class CommentImageRecommendView(generics.ListCreateAPIView):
     queryset = models.CommentImageRecommend.objects.all()
     serializer_class = serializers.CommentImageRecommendSerializer        
@@ -302,5 +313,6 @@ class BannerViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BannerSerializer
 
 class ColumnViewSet(viewsets.ModelViewSet):
-    queryset = models.Column.objects.filter(is_public=True)
+    current_time = timezone.now()
+    queryset = models.Column.objects.filter(public_date__lte=current_time)
     serializer_class = serializers.ColumnSerializer

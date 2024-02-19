@@ -21,7 +21,7 @@ class Shop(models.Model):
     business_time = models.CharField(verbose_name='営業時間')
     rest_day = models.CharField(verbose_name='定休日')
     url = models.URLField(blank=True, verbose_name='店舗ホームページ')
-    last_update = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural = "店舗"
     def __str__(self):
@@ -61,7 +61,7 @@ class Cat(models.Model):
     favorite_things = models.ManyToManyField(FavoriteThing, verbose_name='好きなもの・コト')
     attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='100%います', verbose_name='出没頻度')
     description = models.TextField(verbose_name='猫の説明')
-    last_update = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural='看板猫'
     def __str__(self):
@@ -96,7 +96,7 @@ class Advertise(models.Model):
     favorite_things = models.ManyToManyField(FavoriteThing, verbose_name='好きなもの・コト')
     attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='毎日', verbose_name='出没頻度')
     description = models.TextField(blank=True, verbose_name='猫の説明')
-    last_update = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural='広告看板猫'
     def __str__(self):
@@ -140,12 +140,13 @@ class CommentImage(models.Model):
     comment = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name='comment_images')
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="comment")
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural='コメント画像'
 
 class CommentImageRecommend(models.Model):
     user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
-    comment_image = models.ForeignKey(CommentImage, on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント画像')
+    comment_image_recommend = models.ForeignKey(CommentImage, related_name='comment_images_recommend', on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント画像')
     class Meta:
         verbose_name_plural='コメント画像推し'
 
@@ -163,22 +164,22 @@ class Banner(models.Model):
         verbose_name_plural = 'TOP上位のバナー'
 
 class Column(models.Model):
-    is_public = models.BooleanField(default=False, verbose_name='公開')
-    title = models.CharField()
-    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images")
-    cat_name = models.CharField(max_length=100)
+    public_date = models.DateTimeField(blank=True, null=True, verbose_name='公開日時')
+    title = models.TextField(max_length=200, verbose_name='タイトル')
+    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images", )
+    cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
     detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
-    subtitle = models.CharField()
-    description = models.TextField()
+    subtitle = models.TextField(max_length=200, verbose_name='サブタイトル')
+    description = models.TextField(verbose_name='猫の説明')
     created_date = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural = 'コラム'
 
 class ColumnBlog(models.Model):
-    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog')
+    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog', verbose_name='コラム')
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
-    img_caption = models.CharField()
-    description = models.TextField()
+    img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
+    description = models.TextField(verbose_name='猫の説明')
     class Meta:
         verbose_name_plural = 'コラムブログ'
 

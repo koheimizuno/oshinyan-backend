@@ -15,8 +15,7 @@ class Ambassador(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
     preferred = models.TextField()
-    last_update = models.DateTimeField(auto_now=True)
-
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural = 'アンバサダー'
 
@@ -32,7 +31,7 @@ class Inquiry(models.Model):
     phone = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     detail = models.TextField()
-    last_update = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'お問い合わせ'

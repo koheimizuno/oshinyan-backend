@@ -12,7 +12,7 @@ class UnregisterShop(models.Model):
     phone = models.CharField(max_length=20, blank=True, verbose_name='電話番号（登録者）')
     shop_permission = models.BooleanField(default=False, verbose_name='店舗の許諾')
     cat_info = models.TextField(verbose_name='看板猫情報')
-    last_update = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "未登録店舗"

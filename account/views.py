@@ -99,7 +99,6 @@ class ResetPasswordView(generics.CreateAPIView):
         return Response(status=status.HTTP_200_OK)
 
 class ResetPasswordConfirm(generics.CreateAPIView):
-    permission_classes = [AllowAny]
     def post(self, request, uidb64, token):
         try:
             user_id = urlsafe_base64_decode(uidb64).decode()

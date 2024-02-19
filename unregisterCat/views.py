@@ -32,7 +32,7 @@ class UnregisterShopViewSet(viewsets.ModelViewSet):
                                     「推しニャン」サイトに看板猫発見の依頼がありました。<br/>
                                     下記ご確認ください。
                                 </p>
-                                <p>日時：{shop_data.data['last_update']}</p>
+                                <p>日時：{shop_data.data['created_date']}</p>
                                 <p>
                                     <span>店舗名：{shop_data.data['shop_name']}</span><br />
                                     <span>住所：{shop_data.data['prefecture'], shop_data.data['city'], shop_data['street'], shop_data.data['detail_address']}</span><br />

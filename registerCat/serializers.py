@@ -43,7 +43,13 @@ class CatSerializer(serializers.ModelSerializer):
                 {'message': 'Email Address already exists'})
         return data
 
+class CommentImageRecommendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CommentImageRecommend
+        fields = "__all__"
+
 class CommentImageSerializer(serializers.ModelSerializer):
+    comment_images_recommend = CommentImageRecommendSerializer(read_only=True, many=True)
     class Meta:
         model = models.CommentImage
         fields = "__all__"
@@ -53,11 +59,6 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields='__all__'
-
-class CommentImageRecommendSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.CommentImageRecommend
-        fields = "__all__"
 
 class CommentListSerializer(serializers.ModelSerializer):
     comment_images = CommentImageSerializer(read_only=True, many=True)

@@ -21,7 +21,7 @@ class AmbassadorViewSet(viewsets.ModelViewSet):
                             「推しニャン」サイトにアンバサダー登録がありました。
                             下記ご確認ください。
                         </p>
-                        <p>日時：{ambassador.last_update}</p>
+                        <p>日時：{ambassador.created_date}</p>
                         <p>アンバサダー名：{ambassador.ambassador_name}</p>
                         <p>氏名{ambassador.full_name}</p>
                         <p>都道府県：{ambassador.prefecture}</p>
@@ -67,7 +67,7 @@ class InquiryViewSet(viewsets.ModelViewSet):
                         <p>
                             「推しニャン」サイトに問い合わせが入りました。対応をお願いします。
                         </p>
-                        <p>日時：{inquiry.last_update}</p>
+                        <p>日時：{inquiry.created_date}</p>
                         <p>
                             <span>【受理した内容】</span><br />
                             <span>問い合わせ種別：{inquiry.type}</span><br />

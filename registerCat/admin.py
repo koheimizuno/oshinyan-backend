@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from . import models
@@ -12,8 +11,14 @@ class CatImageInline(admin.TabularInline):
     extra = 1
 
 class CatAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin']
+    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin', 'design_test']
     filter_horizontal = ('character', 'favorite_things',)
+
+    def design_test(self, obj):
+        button_html = '<a class="button" href="http://162.43.50.92/test" target="_blank">デザイン確認</a>'
+        return mark_safe(button_html)
+    design_test.short_description = 'Custom Link Button'
+
     def display_character(self, obj):
         return ', '.join([character.character for character in obj.character.all()])
     display_character.short_description = '性格'
@@ -28,8 +33,7 @@ class CatAdmin(admin.ModelAdmin):
         if len(description) > max_length:
             return mark_safe(f'{description[:max_length]}...')
         return description
-
-    formatted_description.short_description = 'Description'
+    formatted_description.short_description = '猫の説明'
     
     def cat_with_images(self, obj):
         images = obj.images.all()
@@ -154,31 +158,31 @@ admin.site.register(models.Banner, BannerAdmin)
 
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
-    extra = 1
+    extra = 0
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
+    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
     def formatted_description(self, obj):
         max_length = 50
         description = obj.description
         if len(description) > max_length:
             return mark_safe(f'{description[:max_length]}...')
         return description
-    formatted_description.short_description = 'Description'
+    formatted_description.short_description = '猫の説明'
 
     def hero_image_preview(self, obj):
             if obj.hero_image:
                 return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.hero_image.url))
             else:
                 return '(No image)'
-    hero_image_preview.short_description = 'Image Preview'
+    hero_image_preview.short_description = '画像'
 
     def detail_image_preview(self, obj):
             if obj.detail_image:
                 return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.detail_image.url))
             else:
                 return '(No image)'
-    detail_image_preview.short_description = 'Image Preview'
+    detail_image_preview.short_description = '詳細画像'
     
     def display_column_blogs(self, obj):
         column_blogs = obj.blog.all()  # assuming 'blog' is the related_name for ForeignKey in ColumnBlog model
@@ -189,13 +193,26 @@ class ColumnAdmin(admin.ModelAdmin):
             html += f'<p>{column_blog.img_caption}</p>'
             html += f'<p>{truncated_description}</p>'
         return mark_safe(html)
-    display_column_blogs.short_description = 'Column Blogs'
+    display_column_blogs.short_description = 'コラムブログ'
     
     inlines = [ColumnBlogInline]
 admin.site.register(models.Column, ColumnAdmin)
 
 class ColumnBlogOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.ColumnBlog._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+    list_display = ['id', 'column', 'img_caption', 'formatted_description', 'columnblog_image']
+    def formatted_description(self, obj):
+        max_length = 50
+        description = obj.description
+        if len(description) > max_length:
+            return mark_safe(f'{description[:max_length]}...')
+        return description
+    formatted_description.short_description = '猫の説明'
+    def columnblog_image(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    columnblog_image.short_description = 'コラムブログ画像'
 admin.site.register(models.ColumnBlog, ColumnBlogOption)
 
 class ShopImageOption(admin.ModelAdmin):
@@ -213,7 +230,7 @@ class ShopImageInline(admin.TabularInline):
     extra = 0
 
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images', 'last_update']
+    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images', 'created_date']
     def shop_with_images(self, obj):
         images = obj.shop_images.all()
         if images:
