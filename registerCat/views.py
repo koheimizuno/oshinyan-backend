@@ -307,12 +307,22 @@ class CommentReactionIconViewSet(viewsets.ModelViewSet):
     queryset = models.CommentReactionIcon.objects.all()
     serializer_class = serializers.CommentReactionIconSerializer
 # For Comment End
-        
+    
+# Banner Start
 class BannerViewSet(viewsets.ModelViewSet):
     queryset = models.Banner.objects.all()
     serializer_class = serializers.BannerSerializer
-
+# Banner End
+    
+# Column Start
 class ColumnViewSet(viewsets.ModelViewSet):
     current_time = timezone.now()
     queryset = models.Column.objects.filter(public_date__lte=current_time)
     serializer_class = serializers.ColumnSerializer
+# Column End
+
+# Notice Start
+class NoticeViewSet(viewsets.ModelViewSet):
+    queryset = models.Notice.objects.all()
+    serializer_class = serializers.NoticeSerializer
+# Notice End

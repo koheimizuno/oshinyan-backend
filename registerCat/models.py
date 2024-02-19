@@ -1,8 +1,18 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from account.models import Member
 from utils.constants import PREFECTURE_CHOICES, ATTENDANCE_CHOICES, CAT_GENDER
 from django_resized import ResizedImageField
 
+# Banner Start
+class Banner(models.Model):
+    image = ResizedImageField(force_format="WEBP", quality=75, upload_to="topbanner", verbose_name='画像')
+    url = models.CharField(blank=True)
+    class Meta:
+        verbose_name_plural = 'TOP上位のバナー'
+# Banner End
+
+# Shop Start
 class ShopType(models.Model):
     shop_type = models.CharField(max_length=50, verbose_name='店舗種別')
     class Meta:
@@ -35,7 +45,9 @@ class ShopImage(models.Model):
         verbose_name_plural = "店舗画像"
     def __int__(self):
         return self.shop
+# Shop End
 
+# Cat Start
 class Character(models.Model):
     character = models.CharField(max_length=100, verbose_name='性格')
     class Meta:
@@ -86,7 +98,9 @@ class CatImageByAdmin(models.Model):
         return f"Image of {self.cat}"
     class Meta:
         verbose_name_plural='画像'
-    
+# Cat Start
+
+# Advertise Start
 class Advertise(models.Model):
     is_public = models.BooleanField(default=False, verbose_name='公開')
     shop = models.ForeignKey(
@@ -119,7 +133,9 @@ class AdvertiseImageByAdmin(models.Model):
         return f"Image of {self.cat}"
     class Meta:
         verbose_name_plural='画像'
+# Advertise Start
 
+# Recommend Start
 class Recommend(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='recommend', null=True, blank=True, verbose_name='看板猫')
     advertise = models.ForeignKey(Advertise, on_delete=models.CASCADE, related_name='recommend', null=True, blank=True, verbose_name='広告猫')
@@ -128,7 +144,9 @@ class Recommend(models.Model):
         verbose_name_plural='推し'
     def __int__(self):
         return self.user
-    
+# Recommend End
+
+# Comment Start
 class Comment(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, related_name='comment', null=True, blank=True, verbose_name='看板猫')
     user = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='comment', null=True, blank=True, verbose_name='会員')
@@ -156,32 +174,6 @@ class CommentReactionIcon(models.Model):
     imgs = models.URLField()
     class Meta:
         verbose_name_plural = 'コメント アイコン'
-
-class Banner(models.Model):
-    image = ResizedImageField(force_format="WEBP", quality=75, upload_to="topbanner", verbose_name='画像')
-    url = models.CharField(blank=True)
-    class Meta:
-        verbose_name_plural = 'TOP上位のバナー'
-
-class Column(models.Model):
-    public_date = models.DateTimeField(blank=True, null=True, verbose_name='公開日時')
-    title = models.TextField(max_length=200, verbose_name='タイトル')
-    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images", )
-    cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
-    detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
-    subtitle = models.TextField(max_length=200, verbose_name='サブタイトル')
-    description = models.TextField(verbose_name='猫の説明')
-    created_date = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        verbose_name_plural = 'コラム'
-
-class ColumnBlog(models.Model):
-    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog', verbose_name='コラム')
-    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
-    img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
-    description = models.TextField(verbose_name='猫の説明')
-    class Meta:
-        verbose_name_plural = 'コラムブログ'
 
 class ReactionCatIcon(models.Model):
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="reaction/cat")
@@ -212,3 +204,35 @@ class ReactionWordIcon(models.Model):
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to='reaction/word')
     class Meta:
         verbose_name_plural = '絵文字アイコン-メッセージ'
+# Comment End
+
+# Column Start
+class Column(models.Model):
+    public_date = models.DateTimeField(blank=True, null=True, verbose_name='公開日時')
+    title = models.TextField(max_length=200, verbose_name='タイトル')
+    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images", )
+    cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
+    detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
+    subtitle = models.TextField(max_length=200, verbose_name='サブタイトル')
+    description = models.TextField(verbose_name='猫の説明')
+    created_date = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = 'コラム'
+
+class ColumnBlog(models.Model):
+    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog', verbose_name='コラム')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
+    img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
+    description = models.TextField(verbose_name='猫の説明')
+    class Meta:
+        verbose_name_plural = 'コラムブログ'
+# Column End
+
+# Notice Start
+class Notice(models.Model):
+    title = models.TextField(max_length=200, verbose_name='タイトル')
+    pdf = models.FileField(upload_to='notice', validators=[FileExtensionValidator(allowed_extensions=['pdf'])], verbose_name='PDF')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='登録日時')
+    class Meta:
+        verbose_name_plural = 'お知らせ'
+# Notice End

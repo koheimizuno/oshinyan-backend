@@ -23,6 +23,7 @@ router.register(r'reactionparty', views.ReactionPartyIconViewSet)
 router.register(r'reactionseason', views.ReactionSeasonIconViewSet)
 router.register(r'reactionheart', views.ReactionHeartIconViewSet)
 router.register(r'commentreactionicon', views.CommentReactionIconViewSet)
+router.register(r'notice', views.NoticeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

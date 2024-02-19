@@ -2,6 +2,54 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from . import models
 
+# Shop Start
+class ShopImageOption(admin.ModelAdmin):
+    list_display = ['id', 'shop', 'shop_with_images']
+    def shop_with_images(self, obj):
+        if obj.imgs:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
+        else:
+            return '(No image)'
+    shop_with_images.short_description = 'プロフィール画像'
+admin.site.register(models.ShopImage, ShopImageOption)
+
+class ShopImageInline(admin.TabularInline):
+    model = models.ShopImage
+    extra = 0
+
+class ShopAdmin(admin.ModelAdmin):
+    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
+    def shop_with_images(self, obj):
+        images = obj.shop_images.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
+        return 'No Images'
+    shop_with_images.short_description = '店舗画像'
+    inlines = [ShopImageInline]
+admin.site.register(models.Shop, ShopAdmin)
+# Shop End
+
+# Banner Start
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image_preview', 'url']
+    def image_preview(self, obj):
+        if obj.image:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.image.url))
+        else:
+            return '(No image)'
+    image_preview.short_description = '画像'
+admin.site.register(models.Banner, BannerAdmin)
+# Banner End
+
+# Cat Start
+class CharacterOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.Character._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.Character, CharacterOption)
+
+class FavoriteThingOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.FavoriteThing, FavoriteThingOption)
+
 class CatImageByAdminInline(admin.TabularInline):
     model = models.CatImageByAdmin
     extra = 1
@@ -51,19 +99,9 @@ class CatAdmin(admin.ModelAdmin):
     
     inlines = [CatImageInline, CatImageByAdminInline]
 admin.site.register(models.Cat, CatAdmin)
+# Cat End
 
-class RecommendOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.Recommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.Recommend, RecommendOption)
-
-class CharacterOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.Character._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.Character, CharacterOption)
-
-class FavoriteThingOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.FavoriteThing, FavoriteThingOption)
-
+# Advertise Start
 class AdvertiseImageInline(admin.TabularInline):
     model = models.AdvertiseImage
     extra = 1
@@ -108,17 +146,15 @@ class AdvertiseAdmin(admin.ModelAdmin):
     
     inlines = [AdvertiseImageInline, AdvertiseImageByAdminInline]
 admin.site.register(models.Advertise, AdvertiseAdmin)
+# Advertise End
 
-class BannerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'image_preview', 'url']
-    def image_preview(self, obj):
-        if obj.image:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.image.url))
-        else:
-            return '(No image)'
-    image_preview.short_description = '画像'
-admin.site.register(models.Banner, BannerAdmin)
+# Recommend Start
+class RecommendOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.Recommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.Recommend, RecommendOption)
+# Recommend End
 
+# Column Start
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
     extra = 0
@@ -177,32 +213,9 @@ class ColumnBlogOption(admin.ModelAdmin):
             return '(No image)'
     columnblog_image.short_description = 'コラムブログ画像'
 admin.site.register(models.ColumnBlog, ColumnBlogOption)
+# Column End
 
-class ShopImageOption(admin.ModelAdmin):
-    list_display = ['id', 'shop', 'shop_with_images']
-    def shop_with_images(self, obj):
-        if obj.imgs:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
-        else:
-            return '(No image)'
-    shop_with_images.short_description = 'プロフィール画像'
-admin.site.register(models.ShopImage, ShopImageOption)
-
-class ShopImageInline(admin.TabularInline):
-    model = models.ShopImage
-    extra = 0
-
-class ShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
-    def shop_with_images(self, obj):
-        images = obj.shop_images.all()
-        if images:
-            return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
-        return 'No Images'
-    shop_with_images.short_description = '店舗画像'
-    inlines = [ShopImageInline]
-admin.site.register(models.Shop, ShopAdmin)
-
+# Comment Start
 class CommentImageInline(admin.TabularInline):
     model = models.CommentImage
     extra = 0
@@ -320,3 +333,10 @@ class ReactionPartyIconAdmin(admin.ModelAdmin):
             return '(No image)'
     image_preview.short_description = 'プロフィール画像'
 admin.site.register(models.ReactionPartyIcon, ReactionPartyIconAdmin)
+# Comment End
+
+# Notice Start
+class NoticeOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.Notice._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.Notice, NoticeOption)
+# Notice End
