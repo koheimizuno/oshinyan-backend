@@ -59,7 +59,7 @@ class Cat(models.Model):
     birthday = models.DateField(verbose_name='生年月日', blank=True, null=True)
     character = models.ManyToManyField(Character, verbose_name='性格')
     favorite_things = models.ManyToManyField(FavoriteThing, verbose_name='好きなもの・コト')
-    attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='毎日', verbose_name='出没頻度')
+    attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='100%います', verbose_name='出没頻度')
     description = models.TextField(verbose_name='猫の説明')
     last_update = models.DateTimeField(auto_now=True)
     class Meta:

@@ -69,26 +69,35 @@ class MonthRankingCatView(generics.ListAPIView):
 class SearchPrefectureCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
     def get_queryset(self):
-        keyword = self.request.query_params.get('keyword')
-        if keyword:
-            try:
-                return models.Cat.objects.filter(shop__prefecture=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
-            except ValueError:
-                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        keywords = self.request.query_params.getlist('keyword[]')
+        if keywords:
+            queryset = models.Cat.objects.filter(shop__prefecture__in=keywords).annotate(recommend_count=Count('recommend')) \
+                .order_by('-recommend_count', 'last_update')
+            return queryset
         else:
-            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+            return models.Cat.objects.none()
 
 class SearchCharacterCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
     def get_queryset(self):
-        keyword = self.request.query_params.get('keyword')
-        if keyword:
-            try:
-                return models.Cat.objects.filter(character__character=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
-            except ValueError:
-                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        keywords = self.request.query_params.getlist('keyword[]')
+        if keywords:
+            queryset = models.Cat.objects.filter(character__character__in=keywords).annotate(recommend_count=Count('recommend')) \
+                    .order_by('-recommend_count').order_by('last_update')
+            return queryset
         else:
-            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+            return models.Cat.objects.none()
+
+class SearchAttendanceCatView(generics.ListAPIView):
+    serializer_class = serializers.CatSerializer
+    def get_queryset(self):
+        keywords = self.request.query_params.getlist('keyword[]')
+        if keywords:
+            queryset = models.Cat.objects.filter(attendance__in=keywords).annotate(recommend_count=Count('recommend')) \
+                    .order_by('-recommend_count').order_by('last_update')
+            return queryset
+        else:
+            return models.Cat.objects.none()
 
 class SearchFreeCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
@@ -96,7 +105,7 @@ class SearchFreeCatView(generics.ListAPIView):
         keyword = self.request.query_params.get('keyword')
         if keyword:
             try:
-                return models.Cat.objects.filter(cat_name__icontains=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('-last_update')
+                return models.Cat.objects.filter(cat_name__icontains=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('last_update')
             except ValueError:
                 return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
         else:
