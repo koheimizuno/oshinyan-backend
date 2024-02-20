@@ -145,6 +145,28 @@ class Recommend(models.Model):
     def __int__(self):
         return self.user
 # Recommend End
+    
+# Column Start
+class Column(models.Model):
+    public_date = models.DateTimeField(blank=True, null=True, verbose_name='公開日時')
+    title = models.TextField(max_length=200, verbose_name='タイトル')
+    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images", )
+    cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
+    detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
+    subtitle = models.TextField(max_length=200, verbose_name='サブタイトル')
+    description = models.TextField(verbose_name='猫の説明')
+    created_date = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = 'コラム'
+
+class ColumnBlog(models.Model):
+    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog', verbose_name='コラム')
+    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
+    img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
+    description = models.TextField(verbose_name='猫の説明')
+    class Meta:
+        verbose_name_plural = 'コラムブログ'
+# Column End
 
 # Comment Start
 class Comment(models.Model):
@@ -169,7 +191,7 @@ class CommentImageRecommend(models.Model):
         verbose_name_plural='コメント画像推し'
 
 class CommentReactionIcon(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, verbose_name='コメント')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comment_reaction_icon', null=True, blank=True, verbose_name='コメント')
     user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
     imgs = models.URLField()
     class Meta:
@@ -205,28 +227,15 @@ class ReactionWordIcon(models.Model):
     class Meta:
         verbose_name_plural = '絵文字アイコン-メッセージ'
 # Comment End
-
-# Column Start
-class Column(models.Model):
-    public_date = models.DateTimeField(blank=True, null=True, verbose_name='公開日時')
-    title = models.TextField(max_length=200, verbose_name='タイトル')
-    hero_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/hero_images", )
-    cat_name = models.CharField(max_length=100, verbose_name='猫の名前')
-    detail_image = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/detail_images")
-    subtitle = models.TextField(max_length=200, verbose_name='サブタイトル')
-    description = models.TextField(verbose_name='猫の説明')
-    created_date = models.DateTimeField(auto_now_add=True)
+        
+# Report Start
+class Report(models.Model):
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name='report', verbose_name='コメント', blank=True, null=True)
     class Meta:
-        verbose_name_plural = 'コラム'
-
-class ColumnBlog(models.Model):
-    column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='blog', verbose_name='コラム')
-    imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
-    img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
-    description = models.TextField(verbose_name='猫の説明')
-    class Meta:
-        verbose_name_plural = 'コラムブログ'
-# Column End
+        verbose_name_plural='通報一覧'
+# Report End
 
 # Notice Start
 class Notice(models.Model):

@@ -192,7 +192,7 @@ FRONT_URL = 'http://162.43.50.92'
 # For reorder apps and models in admin page
 ADMIN_REORDER = (
     {'app': 'account', 'models': ('account.Member', 'account.Avatar')},
-    {'app': 'registerCat', 'models': ('registerCat.ShopType', 'registerCat.Shop', 'registerCat.ShopImage', 'registerCat.Cat', 'registerCat.Advertise', 'registerCat.Column', 'registerCat.ColumnBlog', 'registerCat.Character', 'registerCat.FavoriteThing', 'registerCat.Recommend', 'registerCat.Comment', 'registerCat.CommentImage', 'registerCat.ReactionWordIcon', 'registerCat.ReactionCatIcon', 'registerCat.ReactionHeartIcon', 'registerCat.ReactionSeasonIcon', 'registerCat.ReactionPartyIcon', 'registerCat.ReactionFoodIcon')},
+    {'app': 'registerCat', 'models': ('registerCat.Banner', 'registerCat.ShopType', 'registerCat.Shop', 'registerCat.Cat', 'registerCat.Advertise', 'registerCat.Character', 'registerCat.FavoriteThing', 'registerCat.Recommend', 'registerCat.Column', 'registerCat.Comment', 'registerCat.ReactionWordIcon', 'registerCat.ReactionCatIcon', 'registerCat.ReactionHeartIcon', 'registerCat.ReactionSeasonIcon', 'registerCat.ReactionPartyIcon', 'registerCat.ReactionFoodIcon', 'registerCat.Report', 'registerCat.Notice')},
     {'app': 'unregisterCat', 'models' : ('unregisterCat.UnregisterShop', 'unregisterCat.CatApply')},
     {'app': 'other', 'models' : ('other.Ambassador', 'other.Inquiry', 'other.Banner')},
 )

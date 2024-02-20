@@ -198,3 +198,16 @@ class NoticeSerializer(serializers.ModelSerializer):
         model = models.Notice
         fields = "__all__"
 # Notice End
+
+# Notice Start
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Report
+        fields = "__all__"
+    def validate(self, data):
+        comment = data.get('comment')
+        user = data.get('user')
+        if models.Report.objects.filter(comment=comment).exists() and models.Report.objects.filter(user=user).exists():
+            raise serializers.ValidationError('すでに通報しています。')
+        return data
+# Notice End

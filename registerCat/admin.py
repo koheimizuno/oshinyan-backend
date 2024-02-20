@@ -3,16 +3,6 @@ from django.utils.safestring import mark_safe
 from . import models
 
 # Shop Start
-class ShopImageOption(admin.ModelAdmin):
-    list_display = ['id', 'shop', 'shop_with_images']
-    def shop_with_images(self, obj):
-        if obj.imgs:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
-        else:
-            return '(No image)'
-    shop_with_images.short_description = 'プロフィール画像'
-admin.site.register(models.ShopImage, ShopImageOption)
-
 class ShopImageInline(admin.TabularInline):
     model = models.ShopImage
     extra = 0
@@ -196,23 +186,6 @@ class ColumnAdmin(admin.ModelAdmin):
     
     inlines = [ColumnBlogInline]
 admin.site.register(models.Column, ColumnAdmin)
-
-class ColumnBlogOption(admin.ModelAdmin):
-    list_display = ['id', 'column', 'img_caption', 'formatted_description', 'columnblog_image']
-    def formatted_description(self, obj):
-        max_length = 50
-        description = obj.description
-        if len(description) > max_length:
-            return mark_safe(f'{description[:max_length]}...')
-        return description
-    formatted_description.short_description = '猫の説明'
-    def columnblog_image(self, obj):
-        if obj.imgs:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
-        else:
-            return '(No image)'
-    columnblog_image.short_description = 'コラムブログ画像'
-admin.site.register(models.ColumnBlog, ColumnBlogOption)
 # Column End
 
 # Comment Start
@@ -220,19 +193,18 @@ class CommentImageInline(admin.TabularInline):
     model = models.CommentImage
     extra = 0
 
+class CommentReactionIconInline(admin.TabularInline):
+    model = models.CommentReactionIcon
+    extra = 0
+
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images']
-    def has_add_permission(self, request):
-        return False
-    def has_change_permission(self, request, obj=None):
-        return False
+    list_display = ['id', 'user', 'cat', 'formatted_comment', 'comment_with_images', 'comment_reaction_icon']
     def formatted_comment(self, obj):
         max_length = 50
         comment = obj.comment
         if len(comment) > max_length:
             return mark_safe(f'{comment[:max_length]}...')
         return comment
-
     formatted_comment.short_description = 'コメント説明'
     def comment_with_images(self, obj):
         images = obj.comment_images.all()
@@ -240,39 +212,18 @@ class CommentAdmin(admin.ModelAdmin):
             return mark_safe(''.join('<img src="{0}" style="max-width:100px; max-height:100px;">'.format(img.imgs.url) for img in images))
         return 'No Images'
     comment_with_images.short_description = 'コメント画像'
-    inlines = [CommentImageInline]
+    def comment_reaction_icon(self, obj):
+        images = obj.comment_reaction_icon.all()
+        if images:
+            return mark_safe(''.join('<img src="{0}" style="max-width:30px; max-height:30px; margin: 0 5px;">'.format(img.imgs) for img in images))
+        return 'No Images'
+    comment_reaction_icon.short_description = 'コメント画像'
+    inlines = [CommentImageInline, CommentReactionIconInline]
 admin.site.register(models.Comment, CommentAdmin)
-
-class CommentImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'comment', 'comment_image_preview']
-    def comment_image_preview(self, obj):
-        if obj.imgs:
-            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.imgs.url))
-        else:
-            return '(No image)'
-    comment_image_preview.short_description = 'プロフィール画像'
-    def has_add_permission(self, request):
-        return False
-    def has_change_permission(self, request, obj=None):
-        return False
-admin.site.register(models.CommentImage, CommentImageAdmin)
 
 # class CommentImageRecommendOption(admin.ModelAdmin):
 #     list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 # admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
-
-class CommentReactionIconOption(admin.ModelAdmin):
-    list_display = ['id', 'comment', 'user', 'image_preview']
-    def has_add_permission(self, request):
-        return False
-    def has_change_permission(self, request, obj=None):
-        return False
-    def image_preview(self, obj):
-        if obj.imgs:
-            return mark_safe(f'<img src="{obj.imgs}" style="max-width:40px;max-height:40px;" />')
-        return "No Image Preview Available"
-    image_preview.short_description = 'コメント アイコン'
-admin.site.register(models.CommentReactionIcon, CommentReactionIconOption)
 
 class ReactionCatIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
@@ -334,6 +285,33 @@ class ReactionPartyIconAdmin(admin.ModelAdmin):
     image_preview.short_description = 'プロフィール画像'
 admin.site.register(models.ReactionPartyIcon, ReactionPartyIconAdmin)
 # Comment End
+
+# Report Start
+class CommentInline(admin.TabularInline):
+    model = models.Comment
+    extra = 0
+
+class ReportOption(admin.ModelAdmin):
+    list_display = ('id', 'user', 'get_related_comments')
+    def get_related_comments(self, obj):
+        comments = models.Comment.objects.filter(report=obj).prefetch_related('comment_images', 'comment_reaction_icon')
+        comment_data = ""
+        for comment in comments:
+            comment_data += f'<p>会員名 : {comment.user}</p>'
+            comment_data += f'<p>猫の名前 : {comment.cat}</p>'
+            comment_data += f'<p>コメント : {comment.comment}</p>'
+            comment_data += '<div style="margin: 10px 0; display: flex; align-items: center; gap: 5px;">'
+            for comment_image in comment.comment_images.all():
+                comment_data += '<div><img src="{0}" style="max-height: 100px; max-width: 100px;" /></div>'.format(comment_image.imgs.url)
+            comment_data += '</div>'
+            comment_data += '<div style="display: flex; align-items: center; gap: 5px;">'
+            for reaction_icon in comment.comment_reaction_icon.all():
+                comment_data += '<img src="{0}" style="max-height: 30px; max-width: 30px;" />'.format(reaction_icon.imgs)
+            comment_data += '</div>'
+        return mark_safe(comment_data)
+
+    get_related_comments.short_description = 'Comment Data'
+admin.site.register(models.Report, ReportOption)
 
 # Notice Start
 class NoticeOption(admin.ModelAdmin):

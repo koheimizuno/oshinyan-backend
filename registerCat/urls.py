@@ -24,6 +24,7 @@ router.register(r'reactionseason', views.ReactionSeasonIconViewSet)
 router.register(r'reactionheart', views.ReactionHeartIconViewSet)
 router.register(r'commentreactionicon', views.CommentReactionIconViewSet)
 router.register(r'notice', views.NoticeViewSet)
+router.register(r'report', views.ReportViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
