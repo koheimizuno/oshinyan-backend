@@ -14,7 +14,7 @@ from . import models
 from . import serializers
 
 from utils.send_email import send_email
-from utils.email_templates import cat_register_email, report_email
+from utils.email_templates import report_email
 
 # For Cat Start
 class CatViewSet(viewsets.ModelViewSet):
@@ -179,29 +179,7 @@ class ShopViewSet(viewsets.ModelViewSet):
             if not models.Shop.objects.filter(shop_name=shop_name).exists():
                 item = shop_data.save()
                 for image in images:
-                    models.ShopImage.objects.create(shop_id=item.id, imgs=image)
-                
-                send_email(shop_data.data['email'], "看板猫！発見御礼にゃ！", "<p>" + shop_data.data['shop_name'] + "様</p>" + cat_register_email)
-                send_email(settings.BACKEND_EMAIL, '看板猫　登録依頼にゃ！',
-                           f"""
-                                <p>事務局担当者</p>
-                                <p>
-                                    「推しニャン」サイトに看板猫発見の依頼がありました。<br/>
-                                    下記ご確認ください。
-                                </p>
-                                <p>日時：{shop_data.data['created_date']}</p>
-                                <p>
-                                    <span>店舗名：{shop_data.data['shop_name']}</span><br />
-                                    <span>住所：{shop_data.data['prefecture'], shop_data.data['city'], shop_data['street'], shop_data.data['detail_address']}</span><br />
-                                    <span>メールアドレス：{shop_data.data['email']}</span><br />
-                                    <span>電話：{shop_data.data['phone']}</span><br />
-                                    <span>店舗許諾：{shop_data.data['shop_permission']}</span><br />
-                                    <span>看板猫情報：{shop_data.data['cat_info']}</span>
-                                </p>
-                                <p>以上です。</p>
-                            """
-                        )
-                
+                    models.ShopImage.objects.create(shop_id=item.id, imgs=image)                
                 return Response(shop_data.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -336,7 +314,7 @@ class ReportViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if report_data.is_valid():
             report_data.save()
-            send_email(settings.BACKEND_EMAIL, '看板猫　登録依頼にゃ！', report_email.format(report_data.data['created_date'], \
+            send_email(settings.BACKEND_EMAIL, '通報ボタン報告', report_email.format(report_data.data['created_date'], \
                     user.username, report_data.data['url'], report_data.data['kanji_name'], report_data.data['furi_name'], \
                     report_data.data['phone'], report_data.data['email'], report_data.data['content'] ))
             return Response(report_data.data, status=status.HTTP_200_OK)

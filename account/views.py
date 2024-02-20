@@ -1,6 +1,6 @@
 from django.conf import settings
 from utils.send_email import send_email
-from utils.email_templates import register_email
+from utils.email_templates import register_email, password_reset_email
 
 # For Define API Views
 from rest_framework import generics, viewsets, status
@@ -42,7 +42,7 @@ class UserRegistrationView(generics.CreateAPIView):
         serializer.validated_data['password'] = hashed_password
         self.perform_create(serializer)
         user = serializer.instance
-        send_email(user.email, "「推しニャン」サイト　会員登録お礼", "<p>" + user.username + "様</p>" + register_email)
+        send_email(user.email, "「推しニャン」サイト　会員登録お礼", register_email.format(user.username))
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class UserLoginView(ObtainAuthToken):
@@ -90,12 +90,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
         uid = urlsafe_base64_encode(force_bytes(user.id))
         token = default_token_generator.make_token(user)
-        send_email(user.email, "パスワードリセット", 
-                   f"""
-                        <p>Please click the link below and reset your password. </p>
-                        <p><a href='{settings.FRONT_URL}/password_reset/{uid}/{token}'>https://oshinyan.love/password_reset/{uid}/{token}</a></p>
-                    """
-        )
+        send_email(user.email, "パスワードリセット", password_reset_email.format(settings.FRONT_URL, uid, token))
         return Response(status=status.HTTP_200_OK)
 
 class ResetPasswordConfirm(generics.CreateAPIView):
