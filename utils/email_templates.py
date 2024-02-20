@@ -57,28 +57,6 @@ ambassador_email = """
     </p>
 """
 
-inquiry_email = """
-    <p>
-        「推しニャン」サイト事務局です。
-        このたびは、「推しニャン」サイトへのお問い合わせありがとうございます。
-    </p>
-
-    【受理した内容】
-    問い合わせ種別
-    個人／法人：
-    会社名
-    氏名
-    ふりなが
-    電話番号
-    メールアドレス
-    お問い合わせ内容
-
-    いただいた内容は、事務局にて返信内容等を精査させていただき、ご連絡が必要と思われたもののみ別途ご連絡をさせていただきます。
-
-    「推しニャン」サイト事務局より
-    お問い合わせ先：<a href="mailto:nyan@oshinyan.love">nyan@oshinyan.love</a>
-"""
-
 cat_register_email = """
     <p>
         「推しニャン」サイト事務局です。<br/>
@@ -110,4 +88,48 @@ cat_register_email = """
         <br />
         ♡♡♡♡♡♡♡♡♡♡♡♡♡
     </p>
+"""
+
+report_email = """
+    <h2>【通報ボタン報告】</h2>
+    <h4>事務局担当者</h4>
+    <h5>
+    「推しニャン」サイトにユーザーから通報がありました。対応をお願いします。
+    </h5>
+    <div style="display: flex; align-items: center">
+    <h4 style="margin: 5px">日時：</h4>
+    <p style="margin: 5px">{}</p>
+    </div>
+    <h4>【受理した内容】</h4>
+    <div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">店舗名 :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">通報URL :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">氏名 :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">ふりなが :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">電話番号 :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">メールアドレス :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    <div style="display: flex; align-items: center">
+        <h5 style="margin: 5px">お問い合わせ内容 :</h5>
+        <p style="margin: 5px">{}</p>
+    </div>
+    </div>
+    <p>以上です。</p>
 """

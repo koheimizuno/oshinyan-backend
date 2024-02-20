@@ -231,8 +231,15 @@ class ReactionWordIcon(models.Model):
 # Report Start
 class Report(models.Model):
     user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
+    url = models.CharField(blank=True)
+    kanji_name = models.CharField(max_length=100, verbose_name='氏名（漢字）', null=True)
+    furi_name = models.CharField(max_length=100, verbose_name='氏名（ふりがな）', null=True)
+    phone = models.CharField(max_length=20, verbose_name='電話番号（登録者）', null=True)
+    email = models.EmailField(verbose_name='メールアドレス', null=True)
+    content = models.TextField(verbose_name='猫の説明', null=True)
     comment = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name='report', verbose_name='コメント', blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='登録日時')
     class Meta:
         verbose_name_plural='通報一覧'
 # Report End
@@ -245,3 +252,11 @@ class Notice(models.Model):
     class Meta:
         verbose_name_plural = 'お知らせ'
 # Notice End
+        
+# Feature Start
+class Feature(models.Model):
+    title = models.CharField(max_length=50, verbose_name='特集タイトル')
+    description = models.TextField(max_length=300, verbose_name='特集説明')
+    prefecture = models.CharField(max_length=100, choices=PREFECTURE_CHOICES, default='北海道', verbose_name='都道府県', blank=True, null=True)
+    character = models.ManyToManyField(Character, verbose_name='性格')
+# Feature End

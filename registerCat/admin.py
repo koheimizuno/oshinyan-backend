@@ -292,7 +292,7 @@ class CommentInline(admin.TabularInline):
     extra = 0
 
 class ReportOption(admin.ModelAdmin):
-    list_display = ('id', 'user', 'get_related_comments')
+    list_display = ('id', 'user', 'url', 'kanji_name', 'furi_name', 'phone', 'email', 'content', 'get_related_comments')
     def get_related_comments(self, obj):
         comments = models.Comment.objects.filter(report=obj).prefetch_related('comment_images', 'comment_reaction_icon')
         comment_data = ""
@@ -304,12 +304,11 @@ class ReportOption(admin.ModelAdmin):
             for comment_image in comment.comment_images.all():
                 comment_data += '<div><img src="{0}" style="max-height: 100px; max-width: 100px;" /></div>'.format(comment_image.imgs.url)
             comment_data += '</div>'
-            comment_data += '<div style="display: flex; align-items: center; gap: 5px;">'
+            comment_data += '<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 5px;">'
             for reaction_icon in comment.comment_reaction_icon.all():
                 comment_data += '<img src="{0}" style="max-height: 30px; max-width: 30px;" />'.format(reaction_icon.imgs)
             comment_data += '</div>'
         return mark_safe(comment_data)
-
     get_related_comments.short_description = 'Comment Data'
 admin.site.register(models.Report, ReportOption)
 
