@@ -211,3 +211,11 @@ class ReportSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('すでに通報しています。')
         return data
 # Notice End
+
+# Feature Start
+class FeatureSerializer(serializers.ModelSerializer):
+    image = CatImageSerializer()
+    class Meta:
+        model = models.Feature
+        fields = "__all__"
+# Feature End

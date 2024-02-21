@@ -25,6 +25,7 @@ router.register(r'reactionheart', views.ReactionHeartIconViewSet)
 router.register(r'commentreactionicon', views.CommentReactionIconViewSet)
 router.register(r'notice', views.NoticeViewSet)
 router.register(r'report', views.ReportViewSet)
+router.register(r'feature', views.FeatureViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -41,5 +42,4 @@ urlpatterns = [
     path('comment', views.CommentListView.as_view(), name='comment'),
     path('commentbyuser', views.CommentByUserListView.as_view(), name='commentbyuser'),
     path('commentimagerecommend', views.CommentImageRecommendView.as_view(), name='commentimagerecommend'),
-
 ]

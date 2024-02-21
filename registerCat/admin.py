@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from django.utils.safestring import mark_safe
 from . import models
 
@@ -8,7 +9,7 @@ class ShopImageInline(admin.TabularInline):
     extra = 0
 
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
+    list_display = ['id', 'shop_type', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
     def shop_with_images(self, obj):
         images = obj.shop_images.all()
         if images:
@@ -287,10 +288,6 @@ admin.site.register(models.ReactionPartyIcon, ReactionPartyIconAdmin)
 # Comment End
 
 # Report Start
-class CommentInline(admin.TabularInline):
-    model = models.Comment
-    extra = 0
-
 class ReportOption(admin.ModelAdmin):
     list_display = ('id', 'user', 'url', 'kanji_name', 'furi_name', 'phone', 'email', 'content', 'get_related_comments')
     def get_related_comments(self, obj):
@@ -309,7 +306,7 @@ class ReportOption(admin.ModelAdmin):
                 comment_data += '<img src="{0}" style="max-height: 30px; max-width: 30px;" />'.format(reaction_icon.imgs)
             comment_data += '</div>'
         return mark_safe(comment_data)
-    get_related_comments.short_description = 'Comment Data'
+    get_related_comments.short_description = 'コメントデータ'
 admin.site.register(models.Report, ReportOption)
 
 # Notice Start
@@ -317,3 +314,33 @@ class NoticeOption(admin.ModelAdmin):
     list_display = [field.name for field in models.Notice._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.Notice, NoticeOption)
 # Notice End
+
+# Feature Start
+class FeatureAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Feature
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customize the 'image' field to display images from CatImage
+        self.fields['image'].queryset = models.CatImage.objects.all()
+
+class FeatureOption(admin.ModelAdmin):
+    list_display = ['id', 'title', 'prefecture', 'character', 'formatted_description', 'display_image']
+    form = FeatureAdminForm
+    def formatted_description(self, obj):
+        max_length = 50
+        description = obj.description
+        if len(description) > max_length:
+            return mark_safe(f'{description[:max_length]}...')
+        return description
+    def display_image(self, obj):
+        if obj.image:
+            return mark_safe('<img src="{0}" style="max-height: 100px; max-width: 100px;" />'.format(obj.image.imgs.url))
+        else:
+            return 'No image'
+    display_image.short_description = 'サムネイル画像'
+    
+admin.site.register(models.Feature, FeatureOption)
+# Feature End

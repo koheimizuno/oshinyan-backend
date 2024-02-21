@@ -1,6 +1,7 @@
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Count
+from django.db.models import Q
 from django.utils import timezone
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -29,8 +30,8 @@ class CatTestViewSet(viewsets.ModelViewSet):
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
     serializer_class = serializers.CatImageSerializer
-    def get_queryset(self):
-        return models.CatImage.objects.none()
+    # def get_queryset(self):
+    #     return models.CatImage.objects.none()
 
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
@@ -321,3 +322,43 @@ class ReportViewSet(viewsets.ModelViewSet):
         else:
             return Response({'errors': report_data.errors}, status=status.HTTP_400_BAD_REQUEST)
 # Report End
+
+# Feature Start
+def filter_cats(cats, prefecture, character):
+    if prefecture:
+        cats = cats.filter(shop__prefecture=prefecture)
+    if character:
+        cats = cats.filter(character=character)
+    return cats
+
+def create_feature_dict(feature, cats, request):
+    serialized_cats = serializers.CatSerializer(instance=cats, many=True, context={'request': request})
+    return {
+        'id': feature.id,
+        'title': feature.title,
+        'description': feature.description,
+        'prefecture': feature.prefecture,
+        'character': feature.character.character if feature.character else None,
+        'cats': serialized_cats.data,
+        'image': serializers.CatImageSerializer(instance=feature.image, context={'request': request}).data
+    }
+
+class FeatureViewSet(viewsets.ModelViewSet):
+    queryset = models.Feature.objects.all()
+    serializer_class = serializers.FeatureSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        feature_data = []
+        for feature in queryset:
+            cats = models.Cat.objects.filter(is_public=True)
+            cats = filter_cats(cats, feature.prefecture, feature.character)
+            feature_dict = create_feature_dict(feature, cats, request)
+            feature_data.append(feature_dict)
+        return Response(feature_data)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        cats = models.Cat.objects.filter(is_public=True)
+        cats = filter_cats(cats, instance.prefecture, instance.character)
+        feature_data = create_feature_dict(instance, cats, request)
+        return Response(feature_data)
+# Feature End
