@@ -259,7 +259,7 @@ class Feature(models.Model):
     description = models.TextField(max_length=300, verbose_name='特集説明')
     prefecture = models.CharField(max_length=100, choices=PREFECTURE_CHOICES, verbose_name='都道府県', blank=True, null=True)
     character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feature', verbose_name='性格', blank=True,  null=True)
-    image = models.ForeignKey(CatImage, on_delete=models.CASCADE, related_name='feature_image', verbose_name='特集画像')
+    image = models.ForeignKey(CatImage, on_delete=models.CASCADE, related_name='feature_image', verbose_name='特集画像', null=True)
     class Meta:
         verbose_name_plural = '特集'
 # Feature End
