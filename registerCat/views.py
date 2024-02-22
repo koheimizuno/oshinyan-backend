@@ -319,7 +319,7 @@ class BannerViewSet(viewsets.ModelViewSet):
 # Column Start
 class ColumnViewSet(viewsets.ModelViewSet):
     current_time = timezone.now()
-    queryset = models.Column.objects.filter(public_date__lte=current_time)
+    queryset = models.Column.objects.filter(public_date__lte=current_time).order_by('created_date')
     serializer_class = serializers.ColumnSerializer
 # Column End
 

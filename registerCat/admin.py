@@ -146,13 +146,17 @@ admin.site.register(models.Recommend, RecommendOption)
 # Recommend End
 
 # Column Start
+class ColumnBlogOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.ColumnBlog._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.ColumnBlog, ColumnBlogOption)
+
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
     extra = 0
     ordering = ['created_date']
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']
+    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs', 'created_date']
     def formatted_description(self, obj):
         max_length = 50
         description = obj.description
