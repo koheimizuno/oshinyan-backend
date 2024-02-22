@@ -149,6 +149,7 @@ admin.site.register(models.Recommend, RecommendOption)
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
     extra = 0
+    ordering = ['created_date']
 
 class ColumnAdmin(admin.ModelAdmin):
     list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs']

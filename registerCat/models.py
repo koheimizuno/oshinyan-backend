@@ -164,6 +164,7 @@ class ColumnBlog(models.Model):
     imgs = ResizedImageField(force_format="WEBP", quality=75, upload_to="column/blog_images")
     img_caption = models.TextField(max_length=200, verbose_name='画像キャプション')
     description = models.TextField(verbose_name='猫の説明')
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
     class Meta:
         verbose_name_plural = 'コラムブログ'
 # Column End

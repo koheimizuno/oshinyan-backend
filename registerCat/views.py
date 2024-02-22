@@ -1,7 +1,6 @@
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Count
-from django.db.models import Q
 from django.utils import timezone
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -26,6 +25,30 @@ class CatTestViewSet(viewsets.ModelViewSet):
     queryset = models.Cat.objects.all().order_by('-created_date')
     serializer_class = serializers.CatSerializer
     permission_classes = [IsAdminUser]
+
+class CatNearbyViewSet(viewsets.ModelViewSet):
+    queryset = models.Cat.objects.all()
+    serializer_class = serializers.CatSerializer
+
+    # def list(self, request, *args, **kwargs):
+    #     address = request.query_params.get('address')
+
+    #     geolocator = Nominatim(user_agent="my_geocoder")
+    #     location = geolocator.geocode(address)
+
+    #     if location:
+    #         target_location = Point(location.longitude, location.latitude, srid=4326)
+
+    #         max_distance = 10  # Define your maximum distance in kilometers
+
+    #         nearby_cats = models.Cat.objects.filter(
+    #             location__distance_lte=(target_location, D(km=max_distance))
+    #         )
+
+    #         serializer = self.get_serializer(nearby_cats, many=True)
+    #         return Response(serializer.data)
+    #     else:
+    #         return Response("Invalid address", status=status.HTTP_400_BAD_REQUEST)
     
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
