@@ -1,5 +1,5 @@
 from django.conf import settings
-from utils.send_email import send_email
+from utils.functions import send_email
 from utils.email_templates import register_email, password_reset_email
 
 # For Define API Views

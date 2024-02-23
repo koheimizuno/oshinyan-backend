@@ -1,3 +1,4 @@
+import requests
 from django.conf import settings
 
 # For ElasticEmail
@@ -35,3 +36,10 @@ def send_email(reciever_email, subject, content):
                 ),
             )
             api_instance.emails_post(email_message_data)
+
+def get_detailaddress_by_api(address):
+        url = settings.ADDRESS_API
+        params = {'query': address}
+        response = requests.get(url, params=params)
+        data = response.json()
+        return data

@@ -146,10 +146,6 @@ admin.site.register(models.Recommend, RecommendOption)
 # Recommend End
 
 # Column Start
-class ColumnBlogOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.ColumnBlog._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.ColumnBlog, ColumnBlogOption)
-
 class ColumnBlogInline(admin.TabularInline):
     model = models.ColumnBlog
     extra = 0

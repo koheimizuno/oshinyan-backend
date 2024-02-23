@@ -207,3 +207,5 @@ CLEANUP_DELETE_FILES = True
 
 # Delete empty folders along with files
 CLEANUP_DELETE_EMPTY_FOLDERS = True
+
+ADDRESS_API = env('ADDRESS_API')

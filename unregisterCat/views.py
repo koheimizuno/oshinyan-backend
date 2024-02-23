@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .models import  UnregisterShop, UnregisterShopImage, CatApply, CatApplyImage, ShopType
 from .serializers import UnregisterShopSerializer, UnregisterShopImageSerializer, CatApplySerializer, ShopTypeSerializer
 
-from utils.send_email import send_email
+from utils.functions import send_email
 from utils.email_templates import unregister_shop_email, unregister_shop_admin_email
 
 class UnregisterShopViewSet(viewsets.ModelViewSet):

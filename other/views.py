@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .models import Ambassador, Inquiry
 from .serializers import AmbassadorSerializer, InquirySerializer
 
-from utils.send_email import send_email
+from utils.functions import send_email
 from utils.email_templates import ambassador_email, ambassador_admin_email, inquiry_email, inquiry_admin_email
 
 class AmbassadorViewSet(viewsets.ModelViewSet):

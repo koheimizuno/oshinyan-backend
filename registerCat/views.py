@@ -2,8 +2,9 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Count
 from django.utils import timezone
-
+from geopy.distance import geodesic
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import generics, viewsets, status
 from rest_framework import filters
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ from account.serializers import MemberSerializer
 from . import models
 from . import serializers
 
-from utils.send_email import send_email
+from utils.functions import send_email, get_detailaddress_by_api
 from utils.email_templates import report_email
 
 # For Cat Start
@@ -27,29 +28,30 @@ class CatTestViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 class CatNearbyViewSet(viewsets.ModelViewSet):
-    queryset = models.Cat.objects.all()
     serializer_class = serializers.CatSerializer
-
-    # def list(self, request, *args, **kwargs):
-    #     address = request.query_params.get('address')
-
-    #     geolocator = Nominatim(user_agent="my_geocoder")
-    #     location = geolocator.geocode(address)
-
-    #     if location:
-    #         target_location = Point(location.longitude, location.latitude, srid=4326)
-
-    #         max_distance = 10  # Define your maximum distance in kilometers
-
-    #         nearby_cats = models.Cat.objects.filter(
-    #             location__distance_lte=(target_location, D(km=max_distance))
-    #         )
-
-    #         serializer = self.get_serializer(nearby_cats, many=True)
-    #         return Response(serializer.data)
-    #     else:
-    #         return Response("Invalid address", status=status.HTTP_400_BAD_REQUEST)
-    
+    def get_queryset(self):
+        address_params = self.request.query_params.get('address')
+        if not address_params:
+            return models.Cat.objects.none
+        try:
+            current_address = get_detailaddress_by_api(address_params)
+            current_latitude = current_address["data"][0]["latitude"]
+            current_longitude = current_address["data"][0]["longitude"]
+            current_coordinates = (current_latitude, current_longitude)
+            queryset = models.Cat.objects.all()
+            nearby_cats = []
+            for cat in queryset:
+                cat_address = get_detailaddress_by_api(cat.shop.address)
+                cat_latitude = cat_address["data"][0]["latitude"]
+                cat_longitude = cat_address["data"][0]["longitude"]
+                cat_coordinates = (cat_latitude, cat_longitude)
+                distance = geodesic(current_coordinates, cat_coordinates).kilometers
+                if distance <= 5.0:
+                    nearby_cats.append(cat)
+            return nearby_cats
+        except ValueError:
+            return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+        
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
     serializer_class = serializers.CatImageSerializer
