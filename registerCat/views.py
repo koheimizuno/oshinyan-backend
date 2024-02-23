@@ -31,23 +31,42 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CatSerializer
     def get_queryset(self):
         address_params = self.request.query_params.get('address')
+
         if not address_params:
-            return models.Cat.objects.none
+            return models.Cat.objects.none()
+
         try:
             current_address = get_detailaddress_by_api(address_params)
-            current_latitude = current_address["data"][0]["latitude"]
-            current_longitude = current_address["data"][0]["longitude"]
+            if not current_address.get("data"):
+                return models.Cat.objects.none()
+
+            current_latitude = current_address["data"][0].get("latitude")
+            current_longitude = current_address["data"][0].get("longitude")
+
+            if current_latitude is None or current_longitude is None:
+                return models.Cat.objects.none()
+
             current_coordinates = (current_latitude, current_longitude)
             queryset = models.Cat.objects.all()
             nearby_cats = []
+
             for cat in queryset:
                 cat_address = get_detailaddress_by_api(cat.shop.address)
-                cat_latitude = cat_address["data"][0]["latitude"]
-                cat_longitude = cat_address["data"][0]["longitude"]
+                if not cat_address.get("data"):
+                    continue
+
+                cat_latitude = cat_address["data"][0].get("latitude")
+                cat_longitude = cat_address["data"][0].get("longitude")
+
+                if cat_latitude is None or cat_longitude is None:
+                    continue
+
                 cat_coordinates = (cat_latitude, cat_longitude)
                 distance = geodesic(current_coordinates, cat_coordinates).kilometers
+
                 if distance <= 5.0:
                     nearby_cats.append(cat)
+
             return nearby_cats
         except ValueError:
             return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
