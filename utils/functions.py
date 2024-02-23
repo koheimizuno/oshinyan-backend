@@ -39,7 +39,11 @@ def send_email(reciever_email, subject, content):
 
 def get_detailaddress_by_api(address):
         url = settings.ADDRESS_API
-        params = {'query': address}
-        response = requests.get(url, params=params)
+        querystring = {"address":address}
+        headers = {
+            "X-RapidAPI-Key": settings.RAPID_API,
+            "X-RapidAPI-Host": "google-maps-geocoding.p.rapidapi.com"
+        }
+        response = requests.get(url, headers=headers, params=querystring)
         data = response.json()
         return data

@@ -35,10 +35,10 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
             return models.Cat.objects.none()
         try:
             current_address = get_detailaddress_by_api(address_params)
-            if not current_address.get("data"):
+            if not current_address.get("results"):
                 return models.Cat.objects.none()
-            current_latitude = current_address["data"][0].get("latitude")
-            current_longitude = current_address["data"][0].get("longitude")
+            current_latitude = current_address['results'][0]['geometry']['location']['lat']
+            current_longitude = current_address['results'][0]['geometry']['location']['lng']
             if current_latitude is None or current_longitude is None:
                 return models.Cat.objects.none()
             current_coordinates = (current_latitude, current_longitude)
@@ -46,10 +46,10 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
             nearby_cats = []
             for cat in queryset:
                 cat_address = get_detailaddress_by_api(cat.shop.address)
-                if not cat_address.get("data"):
+                if not cat_address.get("results"):
                     continue
-                cat_latitude = cat_address["data"][0].get("latitude")
-                cat_longitude = cat_address["data"][0].get("longitude")
+                cat_latitude = cat_address['results'][0]['geometry']['location']['lat']
+                cat_longitude = cat_address['results'][0]['geometry']['location']['lng']
                 if cat_latitude is None or cat_longitude is None:
                     continue
                 cat_coordinates = (cat_latitude, cat_longitude)
