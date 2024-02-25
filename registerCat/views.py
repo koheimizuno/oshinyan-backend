@@ -58,7 +58,7 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
                     nearby_cats.append(cat)
             return nearby_cats
         except ValueError:
-            return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         
 class CatImageViewSet(viewsets.ModelViewSet):
     queryset = models.CatImage.objects.all()
@@ -67,10 +67,6 @@ class CatImageViewSet(viewsets.ModelViewSet):
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     serializer_class = serializers.CharacterSerializer
-
-class FavoriteThingViewSet(viewsets.ModelViewSet):
-    queryset = models.FavoriteThing.objects.all()
-    serializer_class = serializers.FavoriteThingSerializer
 
 class CatImageByAdminViewSet(viewsets.ModelViewSet):
     queryset = models.CatImageByAdmin.objects.all()
@@ -218,6 +214,41 @@ class ShopViewSet(viewsets.ModelViewSet):
         else:
             return Response({'errors': shop_data.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+class ShopNearByViewSet(viewsets.ModelViewSet):
+    queryset = models.Shop.objects.all()
+    serializer_class = serializers.ShopSerializer
+    def get_queryset(self):
+        address_params = self.request.query_params.get('address')
+        if not address_params:
+            return models.Shop.objects.none()
+        try:
+            current_address = get_detailaddress_by_api(address_params)
+            if not current_address.get("results"):
+                return models.Shop.objects.none()
+            current_latitude = current_address['results'][0]['geometry']['location']['lat']
+            current_longitude = current_address['results'][0]['geometry']['location']['lng']
+            if current_latitude is None or current_longitude is None:
+                return models.Shop.objects.none()
+            current_coordinates = (current_latitude, current_longitude)
+            queryset = models.Shop.objects.all()
+            nearby_shops = []
+            for shop in queryset:
+                shop_address = get_detailaddress_by_api(shop.address)
+                if not shop_address.get("results"):
+                    continue
+                shop_latitude = shop_address['results'][0]['geometry']['location']['lat']
+                shop_longitude = shop_address['results'][0]['geometry']['location']['lng']
+                if shop_latitude is None or shop_longitude is None:
+                    continue
+                cat_coordinates = (shop_latitude, shop_longitude)
+                distance = geodesic(current_coordinates, cat_coordinates).kilometers
+                if distance <= 5.0:
+                    nearby_shops.append(shop)
+            return nearby_shops
+        except:
+            return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
+        # return super().get_queryset()
+
 class ShopImageViewSet(viewsets.ModelViewSet):
     queryset = models.ShopImage.objects.all()
     serializer_class = serializers.ShopImageSerializer
@@ -271,23 +302,29 @@ class CommentImageViewSet(viewsets.ModelViewSet):
     queryset = models.CommentImage.objects.all()
     serializer_class = serializers.CommentImageSerializer
     permission_classes = [IsAuthenticated]
-        
-class CommentImageRecommendView(generics.ListCreateAPIView):
+    
+class CommentImageRecommendViewSet(viewsets.ModelViewSet):
     queryset = models.CommentImageRecommend.objects.all()
-    serializer_class = serializers.CommentImageRecommendSerializer        
-    def post(self, request, *args, **kwargs):
-        user_id = request.data.pop('user_id', None)
-        comment_image_id = request.data.pop('comment_image_id', None)
+    serializer_class = serializers.CommentImageRecommendSerializer
+    def create(self, request):
+        user_id = request.data.get('user_id')
+        comment_image_id = request.data.get('comment_image_id')
         try:
             user_instance = Member.objects.get(id=user_id)
             if comment_image_id:
-                comment_image_instance = models.CommentImage.objects.get(id=comment_image_id)  # Ensure it references CommentImage
+                comment_image_instance = models.CommentImage.objects.get(id=comment_image_id)
                 models.CommentImageRecommend.objects.create(comment_image=comment_image_instance, user=user_instance)
                 return Response({'message': 'Successfully created!'}, status=status.HTTP_201_CREATED)
         except models.CommentImage.DoesNotExist:
             return Response({'message': 'Comment image not found'}, status=status.HTTP_404_NOT_FOUND)
         except Member.DoesNotExist:
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class CommentImageRecommendByImgsIdViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CommentImageRecommendSerializer
+    def get_queryset(self):
+        comment_image_id = self.request.query_params.get('comment_image_id')
+        return models.CommentImageRecommend.objects.filter(comment_image=comment_image_id)
 
 class ReactionCatIconViewSet(viewsets.ModelViewSet):
     queryset = models.ReactionCatIcon.objects.all()
@@ -327,7 +364,7 @@ class BannerViewSet(viewsets.ModelViewSet):
 # Column Start
 class ColumnViewSet(viewsets.ModelViewSet):
     current_time = timezone.now()
-    queryset = models.Column.objects.filter(public_date__lte=current_time).order_by('created_date')
+    queryset = models.Column.objects.filter(public_date__lte=current_time).order_by('-created_date')
     serializer_class = serializers.ColumnSerializer
 # Column End
 

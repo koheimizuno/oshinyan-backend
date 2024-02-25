@@ -4,15 +4,17 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'shop', views.ShopViewSet)
+router.register(r'shopnearby', views.ShopNearByViewSet)
 router.register(r'cats', views.CatViewSet)
 router.register(r'catstest', views.CatTestViewSet)
 router.register(r'catnearby', views.CatNearbyViewSet, basename='catnearby')
 router.register(r'catimage', views.CatImageViewSet)
 router.register(r'character', views.CharacterViewSet)
-router.register(r'favoritething', views.FavoriteThingViewSet)
 router.register(r'recommend', views.RecommendViewSet)
 router.register(r'comment', views.CommentViewSet)
 router.register(r'commentimage', views.CommentImageViewSet)
+router.register(r'commentimagerecommend', views.CommentImageRecommendViewSet, basename='commentimagerecommend')
+router.register(r'commentimagerecommendbyimgsid', views.CommentImageRecommendByImgsIdViewSet, basename='commentimagerecommendbyimgsid')
 router.register(r'advertise', views.AdvertiseViewSet)
 router.register(r'banner', views.BannerViewSet)
 router.register(r'column', views.ColumnViewSet)
@@ -42,5 +44,4 @@ urlpatterns = [
     path('usercat', views.UserCatListView.as_view(), name='usercat'),
     path('comment', views.CommentListView.as_view(), name='comment'),
     path('commentbyuser', views.CommentByUserListView.as_view(), name='commentbyuser'),
-    path('commentimagerecommend', views.CommentImageRecommendView.as_view(), name='commentimagerecommend'),
 ]

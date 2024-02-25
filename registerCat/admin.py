@@ -37,10 +37,6 @@ class CharacterOption(admin.ModelAdmin):
     list_display = [field.name for field in models.Character._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
 admin.site.register(models.Character, CharacterOption)
 
-class FavoriteThingOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.FavoriteThing._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.FavoriteThing, FavoriteThingOption)
-
 class CatImageByAdminInline(admin.TabularInline):
     model = models.CatImageByAdmin
     extra = 1
@@ -50,8 +46,8 @@ class CatImageInline(admin.TabularInline):
     extra = 1
 
 class CatAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin', 'design_test']
-    filter_horizontal = ('character', 'favorite_things',)
+    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin', 'design_test']
+    filter_horizontal = ('character',)
 
     def design_test(self, obj):
         button_html = '<a class="button" href="http://162.43.50.92/test" target="_blank">デザイン確認</a>'
@@ -61,10 +57,6 @@ class CatAdmin(admin.ModelAdmin):
     def display_character(self, obj):
         return ', '.join([character.character for character in obj.character.all()])
     display_character.short_description = '性格'
-    
-    def display_favoritething(self, obj):
-        return ', '.join([favorite_things.favorite_things for favorite_things in obj.favorite_things.all()])
-    display_favoritething.short_description = '好きなもの・コト'
 
     def formatted_description(self, obj):
         max_length = 50
@@ -102,15 +94,11 @@ class AdvertiseImageByAdminInline(admin.TabularInline):
     extra = 1
 
 class AdvertiseAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'display_favoritething', 'attendance', 'formatted_description', 'advertise_with_images', 'advertise_with_images_admin']
-    filter_horizontal = ('character', 'favorite_things',)
+    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'attendance', 'formatted_description', 'advertise_with_images', 'advertise_with_images_admin']
+    filter_horizontal = ('character',)
     def display_character(self, obj):
         return ', '.join([character.character for character in obj.character.all()])
     display_character.short_description = 'Character'
-    
-    def display_favoritething(self, obj):
-        return ', '.join([favorite_things.favorite_things for favorite_things in obj.favorite_things.all()])
-    display_favoritething.short_description = 'Favorite_things'
 
     def formatted_description(self, obj):
         max_length = 50
@@ -152,14 +140,7 @@ class ColumnBlogInline(admin.TabularInline):
     ordering = ['created_date']
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview', 'subtitle', 'formatted_description', 'display_column_blogs', 'created_date']
-    def formatted_description(self, obj):
-        max_length = 50
-        description = obj.description
-        if len(description) > max_length:
-            return mark_safe(f'{description[:max_length]}...')
-        return description
-    formatted_description.short_description = '猫の説明'
+    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview','created_date']
 
     def hero_image_preview(self, obj):
             if obj.hero_image:
@@ -174,17 +155,6 @@ class ColumnAdmin(admin.ModelAdmin):
             else:
                 return '(No image)'
     detail_image_preview.short_description = '詳細画像'
-    
-    def display_column_blogs(self, obj):
-        column_blogs = obj.blog.all()  # assuming 'blog' is the related_name for ForeignKey in ColumnBlog model
-        html = ''
-        for column_blog in column_blogs:
-            truncated_description = column_blog.description[:50] + ('...' if len(column_blog.description) > 50 else '')
-            html += f'<img src="{column_blog.imgs.url}" width="100" height="100">'
-            html += f'<p>{column_blog.img_caption}</p>'
-            html += f'<p>{truncated_description}</p>'
-        return mark_safe(html)
-    display_column_blogs.short_description = 'コラムブログ'
     
     inlines = [ColumnBlogInline]
 admin.site.register(models.Column, ColumnAdmin)
@@ -223,9 +193,9 @@ class CommentAdmin(admin.ModelAdmin):
     inlines = [CommentImageInline, CommentReactionIconInline]
 admin.site.register(models.Comment, CommentAdmin)
 
-# class CommentImageRecommendOption(admin.ModelAdmin):
-#     list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-# admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
+class CommentImageRecommendOption(admin.ModelAdmin):
+    list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
+admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
 
 class ReactionCatIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']

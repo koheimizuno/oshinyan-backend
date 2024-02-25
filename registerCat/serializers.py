@@ -20,11 +20,6 @@ class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Character
         fields = "__all__"
-   
-class FavoriteThingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.FavoriteThing
-        fields = "__all__"
 
 class CatImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,7 +36,6 @@ class CatSerializer(serializers.ModelSerializer):
     admin_images = CatImageByAdminSerializer(read_only=True, many=True)
     recommend = RecommendSerializer(read_only=True, many=True)
     character = CharacterSerializer(many=True, read_only=True)
-    favorite_things = FavoriteThingSerializer(many=True, read_only=True)
     class Meta:
         model = models.Cat
         fields = "__all__"
@@ -70,7 +64,6 @@ class AdvertiseSerializer(serializers.ModelSerializer):
     admin_images = AdvertiseImageByAdminSerializer(read_only=True, many=True)
     recommend = RecommendSerializer(read_only=True, many=True, required=False)
     character = CharacterSerializer(many=True, read_only=True)
-    favorite_things = FavoriteThingSerializer(many=True, read_only=True)
     class Meta:
         model = models.Advertise
         fields = "__all__"
@@ -184,6 +177,7 @@ class ColumnBlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ColumnBlog
         fields = "__all__"
+        ordering = ['created_date']
 
 class ColumnSerializer(serializers.ModelSerializer):
     blog = ColumnBlogSerializer(read_only=True, many=True)

@@ -4,10 +4,10 @@ from registerCat.models import ShopType
 
 class UnregisterShop(models.Model):
     shop_name = models.CharField(max_length=100, verbose_name='店舗名')
-    prefecture = models.CharField(max_length=100, choices=PREFECTURE_CHOICES, default='北海道', verbose_name='都道府県')
-    city = models.CharField(max_length=100, blank=True, verbose_name='市区町村')
-    street = models.CharField(max_length=200, blank=True, verbose_name='番地')
-    detail_address = models.CharField(max_length=200, blank=True, verbose_name='建物名・部屋番号')
+    # prefecture = models.CharField(max_length=100, choices=PREFECTURE_CHOICES, default='北海道', verbose_name='都道府県')
+    # city = models.CharField(max_length=100, blank=True, verbose_name='市区町村')
+    # street = models.CharField(max_length=200, blank=True, verbose_name='番地')
+    # detail_address = models.CharField(max_length=200, blank=True, verbose_name='建物名・部屋番号')
     email = models.EmailField(verbose_name='メールアドレス（登録者）')
     phone = models.CharField(max_length=20, blank=True, verbose_name='電話番号（登録者）')
     shop_permission = models.BooleanField(default=False, verbose_name='店舗の許諾')

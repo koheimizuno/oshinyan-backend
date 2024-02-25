@@ -22,7 +22,7 @@ class UnregisterShopImageInline(admin.TabularInline):
     extra = 0
 
 class UnregisterShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_permission', 'shop_name', 'prefecture', 'city', 'street', 'detail_address', 'email', 'phone', 'cat_info', 'shop_with_images', 'created_date']
+    list_display = ['id', 'shop_permission', 'shop_name', 'email', 'phone', 'cat_info', 'shop_with_images', 'created_date']
     def shop_with_images(self, obj):
         images = obj.shop_images.all()
         if images:
