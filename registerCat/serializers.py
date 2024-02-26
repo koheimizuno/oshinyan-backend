@@ -177,7 +177,6 @@ class ColumnBlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ColumnBlog
         fields = "__all__"
-        ordering = ['created_date']
 
 class ColumnSerializer(serializers.ModelSerializer):
     blog = ColumnBlogSerializer(read_only=True, many=True)
