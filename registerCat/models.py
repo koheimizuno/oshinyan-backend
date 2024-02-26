@@ -158,6 +158,7 @@ class ColumnBlog(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
     class Meta:
         verbose_name_plural = 'コラムブログ'
+        ordering = ['created_date']
 # Column End
 
 # Comment Start
