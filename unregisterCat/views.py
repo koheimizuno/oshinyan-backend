@@ -19,14 +19,12 @@ class UnregisterShopViewSet(viewsets.ModelViewSet):
         shop_name = request.data.get('shop_name')
         if shop_data.is_valid():
             if not UnregisterShop.objects.filter(shop_name=shop_name).exists():
-                # shop_data.shop_type = ShopType.objects.get(id=shop_type_id)
                 item = shop_data.save()
                 for image in images:
                     UnregisterShopImage.objects.create(shop_id=item.id, imgs=image)
                 send_email(shop_data.data['email'], "看板猫！発見御礼にゃ！", unregister_shop_email.format(shop_data.data['shop_name']))
                 send_email(settings.BACKEND_EMAIL, '看板猫　登録依頼にゃ！', unregister_shop_admin_email.format(shop_data.data['created_date'], shop_data.data['shop_name'], \
-                               shop_data.data['prefecture'], shop_data.data['city'], shop_data['street'], shop_data.data['detail_address'], shop_data.data['email'], \
-                                shop_data.data['phone'], shop_data.data['shop_permission'], shop_data.data['cat_info']))
+                                shop_data.data['email'], shop_data.data['phone'], shop_data.data['shop_permission'], shop_data.data['cat_info']))
                 
                 return Response(shop_data.data, status=status.HTTP_201_CREATED)
             else:

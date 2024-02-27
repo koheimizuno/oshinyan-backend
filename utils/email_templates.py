@@ -87,7 +87,6 @@ unregister_shop_admin_email = """
     <p>日時：{}</p>
     <p>
         <span>店舗名：{}</span><br />
-        <span>住所：{}, {}, {}, {}</span><br />
         <span>メールアドレス：{}</span><br />
         <span>電話：{}</span><br />
         <span>店舗許諾：{}</span><br />
