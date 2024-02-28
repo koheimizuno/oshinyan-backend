@@ -15,7 +15,7 @@ router.register(r'comment', views.CommentViewSet)
 router.register(r'commentimage', views.CommentImageViewSet)
 router.register(r'commentimagerecommend', views.CommentImageRecommendViewSet, basename='commentimagerecommend')
 router.register(r'commentimagerecommendbyimgsid', views.CommentImageRecommendByImgsIdViewSet, basename='commentimagerecommendbyimgsid')
-router.register(r'advertise', views.AdvertiseViewSet)
+router.register(r'advertise', views.AdvertiseViewSet, basename='advertise')
 router.register(r'banner', views.BannerViewSet)
 router.register(r'column', views.ColumnViewSet)
 router.register(r'shoptype', views.ShopTypeViewSet)
@@ -27,13 +27,11 @@ router.register(r'reactionseason', views.ReactionSeasonIconViewSet)
 router.register(r'reactionheart', views.ReactionHeartIconViewSet)
 router.register(r'commentreactionicon', views.CommentReactionIconViewSet)
 router.register(r'notice', views.NoticeViewSet)
-router.register(r'report', views.ReportViewSet)
 router.register(r'feature', views.FeatureViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     path('randomcat', views.RandomCatView.as_view(), name='randomcat'),
-    path('randomadvertise', views.AdvertiseView.as_view(), name='randomadvertise'),
     path('totalrankingcat', views.TotalRankingCatView.as_view(), name='totalrankingcat'),
     path('monthrankingcat', views.MonthRankingCatView.as_view(), name='monthrankingcat'),
     path('searchprefecture', views.SearchPrefectureCatView.as_view(), name='searchprefecture'),

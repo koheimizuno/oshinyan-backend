@@ -184,12 +184,30 @@ class RecommendView(generics.ListCreateAPIView):
         
 # For Advertise Start
 class AdvertiseViewSet(viewsets.ModelViewSet):
-    queryset = models.Advertise.objects.all()
     serializer_class = serializers.AdvertiseSerializer
-
-class AdvertiseView(generics.ListAPIView):
-    queryset = models.Advertise.objects.filter(is_public=True).order_by('?')[:9]
-    serializer_class = serializers.AdvertiseSerializer
+    def get_queryset(self):
+        count = self.request.query_params.get('count')
+        if not count:
+            return models.Advertise.objects.filter(is_public=True)[:9]
+        else :
+            try:
+                queryset = models.Advertise.objects.filter(is_public=True)
+                return queryset[:int(count)]
+            except : 
+                return models.Advertise.objects.none()
+    def list(self, request, *args, **kwargs):
+        count = request.query_params.get('count')
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        origin_count = models.Advertise.objects.count()
+        end = True
+        if count and int(count) > origin_count: end=False
+        response_data = {
+            'data': serializer.data,
+            'end': end
+        }
+        return Response(response_data)
+                
 # For Advertise End
 
 # For Shop Start
@@ -370,26 +388,9 @@ class ColumnViewSet(viewsets.ModelViewSet):
 
 # Notice Start
 class NoticeViewSet(viewsets.ModelViewSet):
-    queryset = models.Notice.objects.all()
+    queryset = models.Notice.objects.all().order_by('-created_date')
     serializer_class = serializers.NoticeSerializer
 # Notice End
-
-# Report Start
-class ReportViewSet(viewsets.ModelViewSet):
-    queryset = models.Report.objects.all()
-    serializer_class = serializers.ReportSerializer
-    def create(self, request, *args, **kwargs):
-        report_data = self.get_serializer(data=request.data)
-        user = self.request.user
-        if report_data.is_valid():
-            report_data.save()
-            send_email(settings.BACKEND_EMAIL, '通報ボタン報告', report_email.format(report_data.data['created_date'], \
-                    user.username, report_data.data['url'], report_data.data['kanji_name'], report_data.data['furi_name'], \
-                    report_data.data['phone'], report_data.data['email'], report_data.data['content'] ))
-            return Response(report_data.data, status=status.HTTP_200_OK)
-        else:
-            return Response({'errors': report_data.errors}, status=status.HTTP_400_BAD_REQUEST)
-# Report End
 
 # Feature Start
 def filter_cats(cats, prefecture, character):

@@ -220,26 +220,10 @@ class ReactionWordIcon(models.Model):
     class Meta:
         verbose_name_plural = '絵文字アイコン-メッセージ'
 # Comment End
-        
-# Report Start
-class Report(models.Model):
-    user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
-    url = models.CharField(blank=True)
-    kanji_name = models.CharField(max_length=100, verbose_name='氏名（漢字）', null=True)
-    furi_name = models.CharField(max_length=100, verbose_name='氏名（ふりがな）', null=True)
-    phone = models.CharField(max_length=20, verbose_name='電話番号（登録者）', null=True)
-    email = models.EmailField(verbose_name='メールアドレス', null=True)
-    content = models.TextField(verbose_name='猫の説明', null=True)
-    comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name='report', verbose_name='コメント', blank=True, null=True)
-    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='登録日時')
-    class Meta:
-        verbose_name_plural='通報一覧'
-# Report End
 
 # Notice Start
 class Notice(models.Model):
-    title = models.TextField(max_length=200, verbose_name='タイトル')
+    title = models.TextField(max_length=40, verbose_name='タイトル')
     pdf = models.FileField(upload_to='notice', validators=[FileExtensionValidator(allowed_extensions=['pdf'])], verbose_name='PDF', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='登録日時')
     class Meta:

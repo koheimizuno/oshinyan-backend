@@ -1,4 +1,6 @@
 from django.db import models
+from account.models import Member
+from registerCat.models import Comment
 
 CLIENT_TYPE_CHOICES = (
     ('個人','個人'),
@@ -33,3 +35,17 @@ class Inquiry(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         verbose_name_plural = 'お問い合わせ'
+
+class Report(models.Model):
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True, verbose_name='会員')
+    url = models.CharField(blank=True)
+    kanji_name = models.CharField(max_length=100, verbose_name='氏名（漢字）', null=True)
+    furi_name = models.CharField(max_length=100, verbose_name='氏名（ふりがな）', null=True)
+    phone = models.CharField(max_length=20, verbose_name='電話番号（登録者）', null=True)
+    email = models.EmailField(verbose_name='メールアドレス', null=True)
+    content = models.TextField(verbose_name='猫の説明', null=True)
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name='report', verbose_name='コメント', blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='登録日時')
+    class Meta:
+        verbose_name_plural='通報一覧'

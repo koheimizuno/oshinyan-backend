@@ -2,11 +2,11 @@ from django.conf import settings
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Ambassador, Inquiry
-from .serializers import AmbassadorSerializer, InquirySerializer
+from .models import Ambassador, Inquiry, Report
+from .serializers import AmbassadorSerializer, InquirySerializer, ReportSerializer
 
 from utils.functions import send_email
-from utils.email_templates import ambassador_email, ambassador_admin_email, inquiry_email, inquiry_admin_email
+from utils.email_templates import ambassador_email, ambassador_admin_email, inquiry_email, inquiry_admin_email, report_email
 
 class AmbassadorViewSet(viewsets.ModelViewSet):
     queryset = Ambassador.objects.all()
@@ -30,3 +30,20 @@ class InquiryViewSet(viewsets.ModelViewSet):
                             inquiry.client_type, inquiry.company_name, inquiry.kanji_name, inquiry.furi_name, inquiry.phone, \
                             inquiry.email, inquiry.detail ))
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# Report Start
+class ReportViewSet(viewsets.ModelViewSet):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    def create(self, request, *args, **kwargs):
+        report_data = self.get_serializer(data=request.data)
+        user = self.request.user
+        if report_data.is_valid():
+            report_data.save()
+            send_email(settings.BACKEND_EMAIL, '通報ボタン報告', report_email.format(report_data.data['created_date'], \
+                    user.username, report_data.data['url'], report_data.data['kanji_name'], report_data.data['furi_name'], \
+                    report_data.data['phone'], report_data.data['email'], report_data.data['content'] ))
+            return Response(report_data.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'errors': report_data.errors}, status=status.HTTP_400_BAD_REQUEST)
+# Report End
