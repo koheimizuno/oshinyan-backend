@@ -54,9 +54,10 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
                     continue
                 cat_coordinates = (cat_latitude, cat_longitude)
                 distance = geodesic(current_coordinates, cat_coordinates).kilometers
-                if distance <= 5.0:
-                    nearby_cats.append(cat)
-            return nearby_cats
+                nearby_cats.append((cat, distance))
+            nearby_cats.sort(key=lambda x: x[1])
+            sorted_cats = [cat[0] for cat in nearby_cats]
+            return sorted_cats[:9]
         except ValueError:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         
@@ -260,9 +261,10 @@ class ShopNearByViewSet(viewsets.ModelViewSet):
                     continue
                 cat_coordinates = (shop_latitude, shop_longitude)
                 distance = geodesic(current_coordinates, cat_coordinates).kilometers
-                if distance <= 5.0:
-                    nearby_shops.append(shop)
-            return nearby_shops
+                nearby_shops.append((shop, distance))
+            nearby_shops.sort(key=lambda x: x[1])
+            sorted_shops = [shop[0] for shop in nearby_shops]
+            return sorted_shops[:9]
         except:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         # return super().get_queryset()
