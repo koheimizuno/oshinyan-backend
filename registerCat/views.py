@@ -77,9 +77,30 @@ class RecommendViewSet(viewsets.ModelViewSet):
     queryset = models.Recommend.objects.all()
     serializer_class = serializers.RecommendSerializer
 
-class RandomCatView(generics.ListCreateAPIView):
-    queryset = models.Cat.objects.filter(is_public=True).order_by('?')[:9]
+class RandomCatViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CatSerializer
+    def get_queryset(self):
+        count = self.request.query_params.get('count')
+        if not count:
+            return models.Cat.objects.filter(is_public=True).order_by('?')[:9]
+        else :
+            try:
+                queryset = models.Cat.objects.filter(is_public=True).order_by('?')
+                return queryset[:int(count)]
+            except : 
+                return models.Cat.objects.none()
+    def list(self, request, *args, **kwargs):
+        count = request.query_params.get('count')
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        origin_count = models.Cat.objects.count()
+        end = True
+        if count and int(count) > origin_count: end=False
+        response_data = {
+            'data': serializer.data,
+            'end': end
+        }
+        return Response(response_data)
 
 class TotalRankingCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer

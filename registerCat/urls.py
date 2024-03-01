@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register(r'shop', views.ShopViewSet)
 router.register(r'shopnearby', views.ShopNearByViewSet)
 router.register(r'cats', views.CatViewSet)
+router.register(r'randomcat', views.RandomCatViewSet, basename="randomcat")
 router.register(r'catstest', views.CatTestViewSet)
 router.register(r'catnearby', views.CatNearbyViewSet, basename='catnearby')
 router.register(r'catimage', views.CatImageViewSet)
@@ -31,7 +32,6 @@ router.register(r'feature', views.FeatureViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('randomcat', views.RandomCatView.as_view(), name='randomcat'),
     path('totalrankingcat', views.TotalRankingCatView.as_view(), name='totalrankingcat'),
     path('monthrankingcat', views.MonthRankingCatView.as_view(), name='monthrankingcat'),
     path('searchprefecture', views.SearchPrefectureCatView.as_view(), name='searchprefecture'),
