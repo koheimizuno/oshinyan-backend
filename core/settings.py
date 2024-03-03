@@ -69,6 +69,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,7 +77,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'admin_reorder.middleware.ModelAdminReorder',
 ]
@@ -167,11 +167,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_HEADERS = ['X-CSRFTOKEN', 'content-type']
-CORS_ALLOW_HEADERS = "access-control-allow-origin"
+CORS_ALLOW_HEADERS = "*"
 
 CORS_ALLOWED_ORIGINS = [
    'http://oshinyan.love'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    "http://oshinyan.love",
 ]
 
 CORS_ALLOW_METHODS = [
@@ -181,7 +184,6 @@ CORS_ALLOW_METHODS = [
     "DELETE",
     "OPTIONS",
 ]
-
 # For email
 MAIL_API_KEY = env('MAIL_API_KEY')
 BACKEND_EMAIL = env('BACKEND_EMAIL')
