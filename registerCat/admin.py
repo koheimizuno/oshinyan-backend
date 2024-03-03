@@ -192,10 +192,6 @@ class CommentAdmin(admin.ModelAdmin):
     inlines = [CommentImageInline, CommentReactionIconInline]
 admin.site.register(models.Comment, CommentAdmin)
 
-class CommentImageRecommendOption(admin.ModelAdmin):
-    list_display = [field.name for field in models.CommentImageRecommend._meta.get_fields() if not (field.many_to_many or field.one_to_many)]
-admin.site.register(models.CommentImageRecommend, CommentImageRecommendOption)
-
 class ReactionCatIconAdmin(admin.ModelAdmin):
     list_display = ['id', 'image_preview']
     def image_preview(self, obj):

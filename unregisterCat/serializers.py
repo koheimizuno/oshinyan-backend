@@ -16,12 +16,9 @@ class UnregisterShopSerializer(serializers.ModelSerializer):
     def validate(self, data):
         email = data.get('email')
         shop_name = data.get('shop_name')
-        if UnregisterShop.objects.filter(email=email).exists():
+        if UnregisterShop.objects.filter(email=email).exists() and UnregisterShop.objects.filter(shop_name=shop_name).exists():
             raise serializers.ValidationError(
-                {'message': 'Email Address already exists'})
-        if UnregisterShop.objects.filter(shop_name=shop_name).exists():
-            raise serializers.ValidationError(
-                {'message': 'UnregisterShop Name already exists'})
+                {'message': 'Already exists'})
         return data
     
 class CatApplySerializer(serializers.ModelSerializer):
