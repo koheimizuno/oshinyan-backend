@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['162.43.50.92']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -106,7 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -170,6 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_HEADERS = ['X-CSRFTOKEN', 'content-type']
+CORS_ALLOW_HEADERS = "access-control-allow-origin"
 
 CORS_ALLOWED_ORIGINS = [
    'http://162.43.50.92'
@@ -187,7 +186,7 @@ CORS_ALLOW_METHODS = [
 MAIL_API_KEY = env('MAIL_API_KEY')
 BACKEND_EMAIL = env('BACKEND_EMAIL')
 
-FRONT_URL = 'http://162.43.50.92'
+FRONT_URL = 'http://162.43.50.92:3000'
 
 # For reorder apps and models in admin page
 ADMIN_REORDER = (
