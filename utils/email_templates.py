@@ -17,7 +17,7 @@ register_email = """
     </p>
     <div>
       <h4 style="margin: 5px">ログイン画面</h4>
-      <a href="http://162.43.50.92/login/">https://oshinyan.love/login/</a>
+      <a href="http://oshinyan.love/login/">https://oshinyan.love/login/</a>
     </div>
     <div>
       <h4 style="margin: 5px">「推しニャン」サイト事務局より</h4>
@@ -33,7 +33,7 @@ register_email = """
       にゃんこ好きな方には、アンバサダーになってください。<br />
       きっといいことがあります♪<br />
       <h5 style="margin: 5px">登録はこちら↓</h5>
-      <a href="http://162.43.50.92/ambassador/"
+      <a href="http://oshinyan.love/ambassador/"
         >https://oshinyan.love/ambassador/</a
       >
       <br />
@@ -70,7 +70,7 @@ unregister_shop_email = """
       にゃんこ好きな方には、アンバサダーになってください。<br />
       きっといいことがあります♪<br />
       <h5 style="margin: 5px">登録はこちら↓</h5>
-      <a href="http://162.43.50.92/ambassador/"
+      <a href="http://oshinyan.love/ambassador/"
         >https://oshinyan.love/ambassador/</a
       >
       <br />

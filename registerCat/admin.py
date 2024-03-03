@@ -50,7 +50,7 @@ class CatAdmin(admin.ModelAdmin):
     filter_horizontal = ('character',)
 
     def design_test(self, obj):
-        button_html = '<a class="button" href="http://162.43.50.92/test" target="_blank">デザイン確認</a>'
+        button_html = '<a class="button" href="http://oshinyan.love/test" target="_blank">デザイン確認</a>'
         return mark_safe(button_html)
     design_test.short_description = 'Custom Link Button'
 
