@@ -21,6 +21,7 @@ class ShopType(models.Model):
         return self.shop_type
 
 class Shop(models.Model):
+    is_public = models.BooleanField(default=False, verbose_name='公開')
     shop_name = models.CharField(max_length=100, verbose_name='店舗名')
     shop_type = models.ForeignKey(
         ShopType, on_delete=models.CASCADE, related_name='shop', verbose_name='店舗カテゴリ')

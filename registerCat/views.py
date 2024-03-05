@@ -234,7 +234,7 @@ class AdvertiseViewSet(viewsets.ModelViewSet):
 
 # For Shop Start
 class ShopViewSet(viewsets.ModelViewSet):
-    queryset = models.Shop.objects.all()
+    queryset = models.Shop.objects.filter(is_public=True)
     serializer_class = serializers.ShopSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['shop_name', 'prefecture', 'shop_type']

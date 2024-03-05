@@ -9,7 +9,7 @@ class ShopImageInline(admin.TabularInline):
     extra = 0
 
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ['id', 'shop_type', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
+    list_display = ['id', 'is_public', 'shop_type', 'shop_name', 'prefecture', 'address', 'nearest_station', 'phone', 'business_time', 'rest_day', 'url', 'shop_with_images']
     def shop_with_images(self, obj):
         images = obj.shop_images.all()
         if images:
@@ -46,7 +46,7 @@ class CatImageInline(admin.TabularInline):
     extra = 1
 
 class CatAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin', 'design_test']
+    list_display = ['id', 'is_public', 'shop', 'cat_name', 'display_character', 'favorite_things', 'attendance', 'formatted_description', 'cat_with_images', 'cat_with_images_admin', 'design_test']
     filter_horizontal = ('character',)
 
     def design_test(self, obj):
