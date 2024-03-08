@@ -404,7 +404,11 @@ class BannerViewSet(viewsets.ModelViewSet):
     
 # Column Start
 class ColumnViewSet(viewsets.ModelViewSet):
-    queryset = models.Column.objects.none()
+    queryset = models.Column.objects.all()
+    serializer_class = serializers.ColumnSerializer
+
+class AdvancedColumnViewSet(viewsets.ModelViewSet):
+    queryset = models.Column.objects.all()
     serializer_class = serializers.ColumnSerializer
     def get_queryset(self):
         current_time = timezone.now()
@@ -413,7 +417,6 @@ class ColumnViewSet(viewsets.ModelViewSet):
             return models.Column.objects.filter(public_date__lte=current_time).order_by('-created_date')
         else :
             return models.Column.objects.filter(public_date__lte=current_time).order_by('-created_date')[:6]
-        
 # Column End
 
 # Notice Start

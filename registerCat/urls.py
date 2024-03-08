@@ -19,6 +19,7 @@ router.register(r'commentimagerecommendbyimgsid', views.CommentImageRecommendByI
 router.register(r'advertise', views.AdvertiseViewSet, basename='advertise')
 router.register(r'banner', views.BannerViewSet)
 router.register(r'column', views.ColumnViewSet)
+router.register(r'advancedcolumn', views.AdvancedColumnViewSet)
 router.register(r'shoptype', views.ShopTypeViewSet)
 router.register(r'reactioncat', views.ReactionCatIconViewSet)
 router.register(r'reactionfood', views.ReactionFoodIconViewSet)
