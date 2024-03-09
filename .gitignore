@@ -1,7 +1,7 @@
 /env
 /media
 /build
-/staticfiles
+/static
 *.env
 /core/__pycache__
 /DB_backup
