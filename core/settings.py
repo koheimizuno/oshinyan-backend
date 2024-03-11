@@ -170,11 +170,11 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = "*"
 
 CORS_ALLOWED_ORIGINS = [
-   'http://oshinyan.love'
+   'https://oshinyan.love'
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    "http://oshinyan.love",
+    "https://oshinyan.love",
 ]
 
 CORS_ALLOW_METHODS = [
@@ -188,7 +188,7 @@ CORS_ALLOW_METHODS = [
 MAIL_API_KEY = env('MAIL_API_KEY')
 BACKEND_EMAIL = env('BACKEND_EMAIL')
 
-FRONT_URL = 'http://oshinyan.love'
+FRONT_URL = 'https://oshinyan.love'
 
 # For reorder apps and models in admin page
 ADMIN_REORDER = (
