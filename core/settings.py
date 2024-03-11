@@ -29,6 +29,19 @@ SECRET_KEY = 'django-insecure-d=szegh%23&@*-_e4bq+j$*iiiet@^gy5qrtqr3kmah5mloj+f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = ["localhost", "x162-43-50-92.static.xvps.ne.jp", "162.43.50.92"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://oshinyan.love",
+    "https://x162-43-50-92.static.xvps.ne.jp"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://x162-43-50-92.static.xvps.ne.jp"
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -163,25 +176,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = "*"
 
-ALLOWED_HOSTS = ["localhost", "x162-43-50-92.static.xvps.ne.jp", "162.43.50.92"]
-
-CORS_ALLOWED_ORIGINS = [
-    "https://oshinyan.love",
-    "https://x162-43-50-92.static.xvps.ne.jp"
-]
-
-
-CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "DELETE",
-    "OPTIONS",
-]
 # For email
 MAIL_API_KEY = env('MAIL_API_KEY')
 BACKEND_EMAIL = env('BACKEND_EMAIL')
