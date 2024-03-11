@@ -29,8 +29,6 @@ SECRET_KEY = 'django-insecure-d=szegh%23&@*-_e4bq+j$*iiiet@^gy5qrtqr3kmah5mloj+f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['oshinyan.love', 'localhost']
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -169,13 +167,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = "*"
 
+ALLOWED_HOSTS = ["localhost", "x162-43-50-92.static.xvps.ne.jp", "162.43.50.92"]
+
 CORS_ALLOWED_ORIGINS = [
-   'https://oshinyan.love'
+    "https://oshinyan.love",
+    "https://x162-43-50-92.static.xvps.ne.jp"
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "https://oshinyan.love",
-]
 
 CORS_ALLOW_METHODS = [
     "GET",
