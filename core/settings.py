@@ -149,7 +149,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -160,7 +159,6 @@ TIME_ZONE = 'Asia/Tokyo'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -175,11 +173,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# For email
-MAIL_API_KEY = env('MAIL_API_KEY')
-BACKEND_EMAIL = env('BACKEND_EMAIL')
 
 FRONT_URL = 'https://oshinyan.love'
 
@@ -202,6 +195,10 @@ CLEANUP_DELETE_FILES = True
 # Delete empty folders along with files
 CLEANUP_DELETE_EMPTY_FOLDERS = True
 
-# Address API
+# Google Maps Geocoding API
 ADDRESS_API = env('ADDRESS_API')
 RAPID_API = env('RAPID_API')
+
+# For Email Service
+MAIL_API_KEY = env('MAIL_API_KEY')
+BACKEND_EMAIL = env('BACKEND_EMAIL')
