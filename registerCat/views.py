@@ -404,7 +404,7 @@ class BannerViewSet(viewsets.ModelViewSet):
     
 # Column Start
 class ColumnViewSet(viewsets.ModelViewSet):
-    queryset = models.Column.objects.all()
+    queryset = models.Column.objects.all().order_by('id')
     serializer_class = serializers.ColumnSerializer
 
 class AdvancedColumnViewSet(viewsets.ModelViewSet):
