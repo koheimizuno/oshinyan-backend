@@ -19,9 +19,12 @@ from django.urls import path, include
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dbbackup/', views.backup_database, name='backup_database'),
+    path('dbrestore/', views.restore_database, name='restore_database'),
     path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('account/', include('account.urls')),
     path('unregistered/', include('unregisterCat.urls')),
