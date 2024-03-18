@@ -139,7 +139,7 @@ class ColumnBlogInline(admin.TabularInline):
     extra = 0
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview','created_date']
+    list_display = ['id', 'public_date', 'title', 'hero_image_preview', 'cat_name', 'detail_image_preview','created_date', 'display_column_blogs']
 
     def hero_image_preview(self, obj):
             if obj.hero_image:
@@ -154,6 +154,17 @@ class ColumnAdmin(admin.ModelAdmin):
             else:
                 return '(No image)'
     detail_image_preview.short_description = '詳細画像'
+
+    def display_column_blogs(self, obj):
+        column_blogs = obj.blog.all()  # assuming 'blog' is the related_name for ForeignKey in ColumnBlog model
+        html = ''
+        for column_blog in column_blogs:
+            truncated_description = column_blog.description[:50] + ('...' if len(column_blog.description) > 50 else '')
+            html += f'<img src="{column_blog.imgs.url}" width="100" height="100">'
+            html += f'<p>{column_blog.img_caption}</p>'
+            html += f'<p>{truncated_description}</p>'
+        return mark_safe(html)
+    display_column_blogs.short_description = 'コラムブログ'
     
     inlines = [ColumnBlogInline]
 admin.site.register(models.Column, ColumnAdmin)
