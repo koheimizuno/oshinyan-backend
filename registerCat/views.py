@@ -30,34 +30,11 @@ class CatTestViewSet(viewsets.ModelViewSet):
 class CatNearbyViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CatSerializer
     def get_queryset(self):
-        address_params = self.request.query_params.get('address')
-        if not address_params:
+        prefecture_params = self.request.query_params.get('prefecture')
+        if not prefecture_params:
             return models.Cat.objects.none()
         try:
-            current_address = get_detailaddress_by_api(address_params)
-            if not current_address.get("results"):
-                return models.Cat.objects.none()
-            current_latitude = current_address['results'][0]['geometry']['location']['lat']
-            current_longitude = current_address['results'][0]['geometry']['location']['lng']
-            if current_latitude is None or current_longitude is None:
-                return models.Cat.objects.none()
-            current_coordinates = (current_latitude, current_longitude)
-            queryset = models.Cat.objects.all()
-            nearby_cats = []
-            for cat in queryset:
-                cat_address = get_detailaddress_by_api(cat.shop.address)
-                if not cat_address.get("results"):
-                    continue
-                cat_latitude = cat_address['results'][0]['geometry']['location']['lat']
-                cat_longitude = cat_address['results'][0]['geometry']['location']['lng']
-                if cat_latitude is None or cat_longitude is None:
-                    continue
-                cat_coordinates = (cat_latitude, cat_longitude)
-                distance = geodesic(current_coordinates, cat_coordinates).kilometers
-                nearby_cats.append((cat, distance))
-            nearby_cats.sort(key=lambda x: x[1])
-            sorted_cats = [cat[0] for cat in nearby_cats]
-            return sorted_cats[:9]
+            return models.Cat.objects.filter(shop__prefecture=prefecture_params)[:10]
         except ValueError:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         
@@ -258,34 +235,11 @@ class ShopNearByViewSet(viewsets.ModelViewSet):
     queryset = models.Shop.objects.all()
     serializer_class = serializers.ShopSerializer
     def get_queryset(self):
-        address_params = self.request.query_params.get('address')
-        if not address_params:
+        prefecture_params = self.request.query_params.get('prefecture')
+        if not prefecture_params:
             return models.Shop.objects.none()
         try:
-            current_address = get_detailaddress_by_api(address_params)
-            if not current_address.get("results"):
-                return models.Shop.objects.none()
-            current_latitude = current_address['results'][0]['geometry']['location']['lat']
-            current_longitude = current_address['results'][0]['geometry']['location']['lng']
-            if current_latitude is None or current_longitude is None:
-                return models.Shop.objects.none()
-            current_coordinates = (current_latitude, current_longitude)
-            queryset = models.Shop.objects.all()
-            nearby_shops = []
-            for shop in queryset:
-                shop_address = get_detailaddress_by_api(shop.address)
-                if not shop_address.get("results"):
-                    continue
-                shop_latitude = shop_address['results'][0]['geometry']['location']['lat']
-                shop_longitude = shop_address['results'][0]['geometry']['location']['lng']
-                if shop_latitude is None or shop_longitude is None:
-                    continue
-                cat_coordinates = (shop_latitude, shop_longitude)
-                distance = geodesic(current_coordinates, cat_coordinates).kilometers
-                nearby_shops.append((shop, distance))
-            nearby_shops.sort(key=lambda x: x[1])
-            sorted_shops = [shop[0] for shop in nearby_shops]
-            return sorted_shops[:9]
+            return models.Shop.objects.filter(prefecture=prefecture_params)[:10]
         except:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         # return super().get_queryset()
