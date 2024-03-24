@@ -34,7 +34,7 @@ class CatNearbyViewSet(viewsets.ModelViewSet):
         if not prefecture_params:
             return models.Cat.objects.none()
         try:
-            return models.Cat.objects.filter(shop__prefecture=prefecture_params)[:10]
+            return models.Cat.objects.filter(shop__prefecture=prefecture_params)[:9]
         except ValueError:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         
@@ -239,7 +239,7 @@ class ShopNearByViewSet(viewsets.ModelViewSet):
         if not prefecture_params:
             return models.Shop.objects.none()
         try:
-            return models.Shop.objects.filter(prefecture=prefecture_params)[:10]
+            return models.Shop.objects.filter(prefecture=prefecture_params)[:9]
         except:
             return Response("Invalid data", status=status.HTTP_400_BAD_REQUEST)
         # return super().get_queryset()
