@@ -32,7 +32,7 @@ class Shop(models.Model):
     business_time = models.CharField(verbose_name='営業時間')
     rest_day = models.CharField(verbose_name='定休日')
     url = models.URLField(blank=True, verbose_name='店舗ホームページ')
-    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='日付')
     class Meta:
         verbose_name_plural = "店舗"
     def __str__(self):
@@ -67,7 +67,7 @@ class Cat(models.Model):
     favorite_things = models.TextField(verbose_name='好きなもの・コト', null=True, blank=True)
     attendance = models.CharField(max_length=20, choices=ATTENDANCE_CHOICES, default='100%います', verbose_name='出没頻度')
     description = models.TextField(verbose_name='猫の説明')
-    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='日付')
     class Meta:
         verbose_name_plural='看板猫'
     def __str__(self):
