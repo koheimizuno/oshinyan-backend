@@ -1,6 +1,6 @@
 from django.conf import settings
 from datetime import datetime, timedelta
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils import timezone
 from geopy.distance import geodesic
 from django_filters.rest_framework import DjangoFilterBackend
@@ -59,10 +59,10 @@ class RandomCatViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         count = self.request.query_params.get('count')
         if not count:
-            return models.Cat.objects.filter(is_public=True).order_by('?')[:9]
+            return models.Cat.objects.filter(is_public=True).order_by('-created_date')[:9]
         else :
             try:
-                queryset = models.Cat.objects.filter(is_public=True).order_by('?')
+                queryset = models.Cat.objects.filter(is_public=True).order_by('-created_date')
                 return queryset[:int(count)]
             except : 
                 return models.Cat.objects.none()
@@ -126,7 +126,8 @@ class SearchAttendanceCatView(generics.ListAPIView):
     def get_queryset(self):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
-            queryset = models.Cat.objects.filter(attendance__in=keywords).annotate(recommend_count=Count('recommend')) \
+            queryset = models.Cat.objects.filter(attendance__in=keywords) \
+                    .annotate(recommend_count=Count('recommend')) \
                     .order_by('-recommend_count').order_by('created_date')
             return queryset
         else:
@@ -134,15 +135,23 @@ class SearchAttendanceCatView(generics.ListAPIView):
 
 class SearchFreeCatView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
+
     def get_queryset(self):
         keyword = self.request.query_params.get('keyword')
         if keyword:
-            try:
-                return models.Cat.objects.filter(cat_name__icontains=keyword).annotate(recommend_count=Count('recommend')).order_by('-recommend_count').order_by('created_date')
-            except ValueError:
-                return Response("Invalid date format", status=status.HTTP_400_BAD_REQUEST)
+            return models.Cat.objects.filter(Q(cat_name__icontains=keyword) | Q(description__icontains=keyword) | Q(favorite_things__icontains=keyword)) \
+                .annotate(recommend_count=Count('recommend')) \
+                .order_by('-recommend_count', 'created_date')
         else:
-            return Response("Date parameter is required", status=status.HTTP_400_BAD_REQUEST)
+            return models.Cat.objects.filter(is_public=True).order_by('-created_date')[:9]
+
+    def list(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+        except serializers.ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
         
 class UserCatListView(generics.ListAPIView):
     serializer_class = serializers.CatSerializer
