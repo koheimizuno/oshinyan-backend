@@ -59,10 +59,10 @@ class RandomCatViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         count = self.request.query_params.get('count')
         if not count:
-            return models.Cat.objects.filter(is_public=True).order_by('-created_date')[:9]
+            return models.Cat.objects.filter(is_public=True).order_by('?')[:9]
         else :
             try:
-                queryset = models.Cat.objects.filter(is_public=True).order_by('-created_date')
+                queryset = models.Cat.objects.filter(is_public=True).order_by('?')
                 return queryset[:int(count)]
             except : 
                 return models.Cat.objects.none()
