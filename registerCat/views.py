@@ -104,7 +104,7 @@ class SearchPrefectureCatView(generics.ListAPIView):
     def get_queryset(self):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
-            queryset = models.Cat.objects.filter(shop__prefecture__in=keywords).annotate(recommend_count=Count('recommend')) \
+            queryset = models.Cat.objects.filter(is_public=True, shop__prefecture__in=keywords).annotate(recommend_count=Count('recommend')) \
                 .order_by('-recommend_count', 'created_date')
             return queryset
         else:
@@ -115,7 +115,7 @@ class SearchCharacterCatView(generics.ListAPIView):
     def get_queryset(self):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
-            queryset = models.Cat.objects.filter(character__character__in=keywords).annotate(recommend_count=Count('recommend')) \
+            queryset = models.Cat.objects.filter(is_public=True, character__character__in=keywords).annotate(recommend_count=Count('recommend')) \
                     .order_by('-recommend_count').order_by('created_date')
             return queryset
         else:
@@ -126,7 +126,7 @@ class SearchAttendanceCatView(generics.ListAPIView):
     def get_queryset(self):
         keywords = self.request.query_params.getlist('keyword[]')
         if keywords:
-            queryset = models.Cat.objects.filter(attendance__in=keywords) \
+            queryset = models.Cat.objects.filter(is_public=True, attendance__in=keywords) \
                     .annotate(recommend_count=Count('recommend')) \
                     .order_by('-recommend_count').order_by('created_date')
             return queryset
@@ -139,7 +139,7 @@ class SearchFreeCatView(generics.ListAPIView):
     def get_queryset(self):
         keyword = self.request.query_params.get('keyword')
         if keyword:
-            return models.Cat.objects.filter(Q(cat_name__icontains=keyword) | Q(description__icontains=keyword) | Q(favorite_things__icontains=keyword)) \
+            return models.Cat.objects.filter( Q(is_public=True) & (Q(cat_name__icontains=keyword) | Q(description__icontains=keyword) | Q(favorite_things__icontains=keyword))) \
                 .annotate(recommend_count=Count('recommend')) \
                 .order_by('-recommend_count', 'created_date')
         else:
