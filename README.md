@@ -11,11 +11,13 @@ Features:
 - django-cleanup
 - django-resized
 - django-modeladmin-reorder
+- django-filter
 - pillow
 - psycopg2
 - python-dateutil
 - ElasticEmail
 - whitenoise
+- PostgreSQL
 
 ### Prerequisites
 
